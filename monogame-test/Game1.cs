@@ -6,13 +6,6 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    public static class LoadedContent
-    {
-        public static Texture2D ballText;
-    }
-    public float ballSpeed = 100f;
-    public Vector2 ballPos;
-
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -23,14 +16,15 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        ballPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+        //ballPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+        Window.Title = "spacegame";
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        LoadedContent.ballText = Content.Load<Texture2D>("ball");
+        //LoadedContent.ballText = Content.Load<Texture2D>("ball");
         // TODO: use this.Content to load your game content here
     }
 
@@ -49,7 +43,8 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-        _spriteBatch.Draw(LoadedContent.ballText, ballPos, Color.White);
+        //_spriteBatch.Draw(LoadedContent.ballText, ballPos, Color.White);
+        
         _spriteBatch.End();
 
         base.Draw(gameTime);
