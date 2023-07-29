@@ -19,6 +19,8 @@
     <None Remove="Content\MontserratMedium-nRxlJ.ttf" />
     <None Remove="Content\File.spritefont" />
     <None Remove="GameObjectPrefabs\" />
+    <None Remove="Content\Textures\tile.png" />
+    <None Remove="GameObjectArch\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -31,6 +33,7 @@
   <ItemGroup>
     <Folder Include="Components\" />
     <Folder Include="GameObjectPrefabs\" />
+    <Folder Include="GameObjectArch\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
