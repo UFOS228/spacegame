@@ -10,7 +10,7 @@ namespace monogametest.GameObjectPrefabs
 		{
             name = "Wall";
             components = new List<Component>() {new RendererComponent(
-                    game.Content.Load<Texture2D>("shuttlewhite"), Color.White,
+                    MyContentManager.Load<Texture2D>("shuttlewhite"), Color.White,
                     SpriteEffects.None, 1f)};
             foreach (var item in components)
             {

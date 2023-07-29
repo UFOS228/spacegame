@@ -21,6 +21,7 @@
     <None Remove="GameObjectPrefabs\" />
     <None Remove="Content\Textures\tile.png" />
     <None Remove="GameObjectArch\" />
+    <None Remove="Content\MediumFont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />

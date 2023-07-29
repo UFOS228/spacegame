@@ -10,7 +10,7 @@ namespace monogame_test
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        public Vector2 cameraPos = Vector2.Zero;
+        public Vector2 cameraPos = new Vector2(100, 0);
         public Vector2 cameraPosCentered
         {
             get
@@ -50,6 +50,7 @@ namespace monogame_test
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             //LoadedContent.ballText = Content.Load<Texture2D>("ball");
+            MyContentManager.ContentInit(this);
             // TODO: use this.Content to load your game content here
         }
 
@@ -57,6 +58,7 @@ namespace monogame_test
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            
 
             // TODO: Add your update logic here
             foreach (var item in ObjectManager.objectsOnMap)
@@ -71,8 +73,7 @@ namespace monogame_test
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
