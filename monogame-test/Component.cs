@@ -1,22 +1,22 @@
 ﻿using System;
 namespace monogametest
 {
-	public class Component
+	public abstract class Component
 	{
 		public GameObject gameObject;
-		public void Init()
+		public virtual void Init()
 		{
 
 		}
-		public void Update()
+		public virtual void Update()
 		{
 
 		}
-		public void OnDraw()
+		public virtual void OnDraw()
 		{
 
 		}
-		public void OnDestroy()
+		public virtual void OnDestroy()
 		{
 
 		}
