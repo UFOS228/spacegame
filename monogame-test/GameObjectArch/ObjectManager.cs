@@ -26,6 +26,7 @@ namespace monogametest
 			obj.game = game;
             obj.position = pos;
             obj.rotation = rot;
+			objectsOnMap.Add(obj);
             foreach (var item in obj.components)
             {
                 item.gameObject = obj;
@@ -33,6 +34,29 @@ namespace monogametest
             }
 			return obj;
         }
+		public static GameObject[] FindObjectsWithTag(string tag)
+		{
+			List<GameObject> obj = new List<GameObject>();
+			foreach (var item in objectsOnMap)
+			{
+				if (GameManager.HasItemInArray(item.tags.ToArray(), tag))
+				{
+					obj.Add(item);
+				}
+			}
+			return obj.ToArray();
+		}
+		public static GameObject? FindObjectWithTag(string tag)
+		{
+			try
+			{
+				return FindObjectsWithTag(tag)[0];
+			}
+			catch
+			{
+				return null;
+			}
+		}
 	}
 }
 

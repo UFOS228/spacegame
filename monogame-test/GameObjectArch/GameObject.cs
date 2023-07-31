@@ -5,21 +5,26 @@ namespace monogametest
 {
 	public class GameObject
 	{
-		public GameObject(Game1 currentGame, Component[] component, Vector2 pos, Vector2 scalee, float rot = 0)
+		public GameObject(string nameOfObj, Component[] component, Vector2 pos, Vector2 scalee,
+			float rot = 0, string[] tagsOfThisObj = null)
 		{
-			game = currentGame;
+			name = nameOfObj;
+            tags = tagsOfThisObj.ToList();
 			components = component.ToList();
 			position = pos;
 			scale = scalee;
 			rotation = rot;
         }
-		public GameObject(Game1 currentGame)
-		{
-			game = currentGame;
+        public GameObject(string nameOfObj, Component[] component, string[] tagsOfThisObj = null)
+        {
+			name = nameOfObj;
+			if (tagsOfThisObj != null)tags = tagsOfThisObj.ToList();
+            components = component.ToList();
         }
 		public GameObject() { }
 
 		public string name = "Text";
+		public List<string> tags = new List<string>();
 		public Vector2 position = Vector2.Zero;
 		public float rotation = 0;
 		public Vector2 scale = Vector2.One;
@@ -55,6 +60,14 @@ namespace monogametest
 				comp = default;
 				return false;
 			}
+		}
+		public void AddTag(string tag)
+		{
+			tags.Add(tag);
+		}
+		public void RemoveTag(string tag)
+		{
+			tags.Remove(tag);
 		}
 
     }

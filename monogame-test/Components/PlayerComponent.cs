@@ -4,8 +4,8 @@ namespace monogametest.Components
 	public class PlayerComponent : Component
 	{
 		public float movementCooldown = 10f;
-        public int movementAmount = 100;
-        public bool isCameraLocksOnPlayer = false;
+        public int movementAmount = 10;
+        public bool isCameraLocksOnPlayer = true;
 		private bool isMoveCooldowns = false;
         public override void Init()
         {
@@ -13,7 +13,6 @@ namespace monogametest.Components
         }
         public override void Update()
 		{
-            if (isCameraLocksOnPlayer) gameObject.game.cameraPosCentered = gameObject.position;
 			if (Keyboard.GetState().IsKeyDown(Keys.W))
 			{
 				PlMove(new Vector2(0, -movementAmount));
@@ -36,11 +35,11 @@ namespace monogametest.Components
 
 
         }
-        public async void PlMove(Vector2 direction, bool isCooldowns = true)
+        public async void PlMove(Vector2 direction, bool isCooldowns = false)
         {
 			if (!isMoveCooldowns)
 			{
-				gameObject.position += direction;
+                gameObject.position += direction;
 				if (isCooldowns)
 				{
 					await Task.Run(() =>
@@ -51,7 +50,11 @@ namespace monogametest.Components
 
 					});
 				}
-			}
+                if (isCameraLocksOnPlayer)
+                {
+                    gameObject.game.cameraPosCentered = new Vector2(-gameObject.position.X, -gameObject.position.Y);
+                }
+            }
         }
     }
 }

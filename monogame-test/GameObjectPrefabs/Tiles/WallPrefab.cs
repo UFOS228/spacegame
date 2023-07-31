@@ -11,12 +11,8 @@ namespace monogametest.GameObjectPrefabs
             name = "Wall";
             components = new List<Component>() {new RendererComponent(
                     MyContentManager.Load<Texture2D>("shuttlewhite"), Color.White,
-                    SpriteEffects.None, 1f)};
-            foreach (var item in components)
-            {
-                item.gameObject = this;
-                item.Init();
-            }
+                    SpriteEffects.None, 0.8f)};
+            scale = new Vector2(2);
         }
 	}
 }

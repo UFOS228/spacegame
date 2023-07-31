@@ -22,6 +22,8 @@
     <None Remove="Content\Textures\tile.png" />
     <None Remove="GameObjectArch\" />
     <None Remove="Content\MediumFont.ttf" />
+    <None Remove="GameObjectPrefabs\Tiles\" />
+    <None Remove="GameObjectPrefabs\Parallaxes\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -35,6 +37,8 @@
     <Folder Include="Components\" />
     <Folder Include="GameObjectPrefabs\" />
     <Folder Include="GameObjectArch\" />
+    <Folder Include="GameObjectPrefabs\Tiles\" />
+    <Folder Include="GameObjectPrefabs\Parallaxes\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

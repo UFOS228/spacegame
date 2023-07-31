@@ -2,6 +2,7 @@
 using monogametest;
 using monogametest.Components;
 using monogametest.GameObjectPrefabs;
+using monogametest.GameObjectPrefabs.Parallaxes;
 
 namespace monogame_test
 {
@@ -9,14 +10,14 @@ namespace monogame_test
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        public Vector2 cameraPos = new Vector2(100, 0);
+        public SpriteBatch _spriteBatch;
+        public Vector2 cameraPos = new Vector2(0, 0);
         public Vector2 cameraPosCentered
         {
             get
             {
-                return new Vector2(cameraPos.X + (_graphics.PreferredBackBufferWidth / 2),
-                    cameraPos.Y + (_graphics.PreferredBackBufferHeight / 2));
+                return new Vector2(cameraPos.X - (_graphics.PreferredBackBufferWidth / 2),
+                    cameraPos.Y - (_graphics.PreferredBackBufferHeight / 2));
             }
             set
             {
@@ -24,6 +25,7 @@ namespace monogame_test
                     value.Y + (_graphics.PreferredBackBufferHeight / 2));
             }
         }
+        public float updateTimeDelta;
 
         public Game1()
         {
@@ -34,16 +36,16 @@ namespace monogame_test
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             //ballPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             Window.Title = "Space game";
             base.Initialize();
             ObjectManager.game = this;
-            ObjectManager.objectsOnMap.Add(new GameObject(this, new Component[] {
-            new RendererComponent(Content.Load<Texture2D>("ball"), Color.White, SpriteEffects.None, 1),
-            new PlayerComponent()},
-                Vector2.Zero, Vector2.One));
+            cameraPosCentered = Vector2.Zero;
+            //Спавн обьектов. TODO: Map system
+            ObjectManager.SpawnObject(new PlayerPrefab(), Vector2.Zero);
             ObjectManager.SpawnObject(new WallPrefab(), Vector2.Zero);
+            ObjectManager.SpawnObject(new Layer1ParallaxPrefab(), Vector2.Zero);
+            ObjectManager.SpawnObject(new AspidParallaxNebPrefab(), Vector2.Zero);
         }
 
         protected override void LoadContent()
@@ -51,16 +53,14 @@ namespace monogame_test
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             //LoadedContent.ballText = Content.Load<Texture2D>("ball");
             MyContentManager.ContentInit(this);
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
+            //updateTimeDelta = gameTime.ElapsedGameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
 
-            // TODO: Add your update logic here
             foreach (var item in ObjectManager.objectsOnMap)
             {
                 foreach (var component in item.components)
@@ -74,15 +74,14 @@ namespace monogame_test
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            // TODO: Add your drawing code here
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.BackToFront);
             //_spriteBatch.Draw(LoadedContent.ballText, ballPos, Color.White);
             foreach (var item in ObjectManager.objectsOnMap)
             {
                 if (item.TryGetComponent(out RendererComponent renderer))
                 {
-                    if (ObjectManager.Distance(cameraPosCentered, item.position) <= 2000)
+                    if (ObjectManager.Distance(cameraPosCentered, -item.position) <= _graphics.PreferredBackBufferHeight + _graphics.PreferredBackBufferWidth)
                     {
                         _spriteBatch.Draw(renderer.texture, item.position + cameraPos, null,
                             renderer.color, item.rotation, new Vector2(renderer.texture.Width / 2, renderer.texture.Height / 2), item.scale, renderer.flipping, renderer.layerDepth);
@@ -94,12 +93,20 @@ namespace monogame_test
                 }
             }
 #if DEBUG
-        if (Keyboard.GetState().IsKeyDown(Keys.I))
-        {
-                Console.Clear();
-                Console.WriteLine("Debug:\n" +
-                "Playerpos:" + ObjectManager.objectsOnMap[0].position);
-        }
+            Console.Clear();
+            Console.WriteLine("Debug:");
+            Console.WriteLine("CamPos:" + cameraPos);
+            Console.WriteLine("CamPosCentered:" + cameraPosCentered);
+            if (Keyboard.GetState().IsKeyDown(Keys.I))
+            {
+                Console.WriteLine("------------Object manifest------------");
+                foreach (var item in ObjectManager.objectsOnMap)
+                {
+                    Console.WriteLine("Object:" + item.name + " Pos:" + item.position);
+                }
+                Console.WriteLine("---------------------------------------");
+
+            }
 #endif
             _spriteBatch.End();
 
