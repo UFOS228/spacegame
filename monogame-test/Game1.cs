@@ -9,6 +9,7 @@ namespace monogame_test
 
     public class Game1 : Game
     {
+        public static Game1 instance;
         private GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
         public Vector2 cameraPos = new Vector2(0, 0);
@@ -26,6 +27,7 @@ namespace monogame_test
             }
         }
         public float updateTimeDelta;
+        public Random random;
 
         public Game1()
         {
@@ -36,6 +38,8 @@ namespace monogame_test
 
         protected override void Initialize()
         {
+            instance = this;
+            random = new Random();
             //ballPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             Window.Title = "Space game";
             base.Initialize();
@@ -81,7 +85,7 @@ namespace monogame_test
             {
                 if (item.TryGetComponent(out RendererComponent renderer))
                 {
-                    if (ObjectManager.Distance(cameraPosCentered, -item.position) <= _graphics.PreferredBackBufferHeight + _graphics.PreferredBackBufferWidth)
+                    if (Vector2.Distance(cameraPosCentered, -item.position) <= _graphics.PreferredBackBufferHeight + _graphics.PreferredBackBufferWidth)
                     {
                         _spriteBatch.Draw(renderer.texture, item.position + cameraPos, null,
                             renderer.color, item.rotation, new Vector2(renderer.texture.Width / 2, renderer.texture.Height / 2), item.scale, renderer.flipping, renderer.layerDepth);
@@ -93,12 +97,12 @@ namespace monogame_test
                 }
             }
 #if DEBUG
-            Console.Clear();
-            Console.WriteLine("Debug:");
-            Console.WriteLine("CamPos:" + cameraPos);
-            Console.WriteLine("CamPosCentered:" + cameraPosCentered);
             if (Keyboard.GetState().IsKeyDown(Keys.I))
             {
+                Console.Clear();
+                Console.WriteLine("Debug:");
+                Console.WriteLine("CamPos:" + cameraPos);
+                Console.WriteLine("CamPosCentered:" + cameraPosCentered);
                 Console.WriteLine("------------Object manifest------------");
                 foreach (var item in ObjectManager.objectsOnMap)
                 {

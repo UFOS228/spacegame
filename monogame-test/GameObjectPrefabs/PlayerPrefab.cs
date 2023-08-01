@@ -5,8 +5,9 @@ namespace monogametest.GameObjectPrefabs
 {
 	public class PlayerPrefab : GameObject
 	{
-        public PlayerPrefab()
+        public override void Init()
         {
+            base.Init();
             name = "Player";
             tags = new List<string> { "player" };
             components = new List<Component>()

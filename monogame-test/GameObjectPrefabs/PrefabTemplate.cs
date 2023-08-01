@@ -5,8 +5,9 @@ namespace monogametest.GameObjectPrefabs
 {
 	public class PrefabTemplate : GameObject
 	{
-        public PrefabTemplate()
+        public override void Init()
         {
+            base.Init();
             name = "Sample text";
             components = new List<Component>()
             {

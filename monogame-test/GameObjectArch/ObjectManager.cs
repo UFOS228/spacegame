@@ -17,20 +17,17 @@ namespace monogametest
 			}
 			objectsOnMap.Remove(obj);
 		}
-		public static float Distance(Vector2 pos1, Vector2 pos2)
-		{
-			return MathF.Sqrt(MathF.Pow(pos2.X - pos1.X, 2) + MathF.Pow(pos2.Y - pos1.Y, 2));
-		}
 		public static GameObject SpawnObject(GameObject obj, Vector2 pos, float rot = 0)
 		{
+			obj.Init();
 			obj.game = game;
             obj.position = pos;
             obj.rotation = rot;
 			objectsOnMap.Add(obj);
-            foreach (var item in obj.components)
+            for (int i = 0; i < obj.components.Count; i++)
             {
-                item.gameObject = obj;
-                item.Init();
+                obj.components[i].gameObject = obj;
+                obj.components[i].Init();
             }
 			return obj;
         }

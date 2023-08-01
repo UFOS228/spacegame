@@ -6,13 +6,14 @@ namespace monogametest.GameObjectPrefabs
 {
 	public class WallPrefab : GameObject
 	{
-		public WallPrefab()
+        public override void Init()
 		{
+            base.Init();
             name = "Wall";
-            components = new List<Component>() {new RendererComponent(
-                    MyContentManager.Load<Texture2D>("shuttlewhite"), Color.White,
-                    SpriteEffects.None, 0.8f)};
             scale = new Vector2(2);
+            AddComponent(new RendererComponent(
+                    MyContentManager.Load<Texture2D>("shuttlewhite"), Color.White,
+                    SpriteEffects.None, 0.8f));
         }
 	}
 }

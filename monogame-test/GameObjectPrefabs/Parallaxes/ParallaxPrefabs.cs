@@ -5,28 +5,24 @@ namespace monogametest.GameObjectPrefabs.Parallaxes
 {
 	public class Layer1ParallaxPrefab : GameObject
 	{
-        public Layer1ParallaxPrefab()
+        public override void Init()
         {
+            base.Init();
             name = "Layer1Parallax";
-            components = new List<Component>()
-            {
-                new ParallaxComponent(
+            AddComponent(new ParallaxComponent(
                     MyContentManager.Load<Texture2D>("Parallaxes/layer1", ContentType.Textures),
-                    Color.White, 2, 1, 0.35f)
-            };
+                    Color.White, 2, 1, 0.35f));
         }
     }
-    public class AspidParallaxNebPrefab : GameObject
+    public class AspidParallaxNebPrefab : Layer1ParallaxPrefab
     {
-        public AspidParallaxNebPrefab()
+        public override void Init()
         {
+            base.Init();
             name = "AspidParallaxNeb";
-            components = new List<Component>()
-            {
-                new ParallaxComponent(
-                    MyContentManager.Load<Texture2D>("Parallaxes/AspidParallaxNeb", ContentType.Textures),
-                    Color.White, 1, 0.99f, 0.4f)
-            };
+            SetComponent(new ParallaxComponent(
+                MyContentManager.Load<Texture2D>("Parallaxes/AspidParallaxNeb", ContentType.Textures),
+                Color.White, 1, 0.99f, 0.4f));
         }
     }
 }

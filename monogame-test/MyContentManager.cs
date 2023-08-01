@@ -4,7 +4,7 @@ using monogame_test;
 
 namespace monogametest
 {
-	public enum ContentType {Textures = 0, Audio = 1}
+	public enum ContentType {Textures = 0, Audio = 1, Fonts = 2}
 	public class ContentField
 	{
 		public ContentField(string pathToFile)
@@ -27,6 +27,10 @@ namespace monogametest
                     adding = "Textures/";
                     break;
                 case ContentType.Audio:
+                    adding = "Audio/";
+                    break;
+                case ContentType.Fonts:
+					adding = "Fonts/";
                     break;
                 default:
                     break;
@@ -44,6 +48,11 @@ namespace monogametest
 			new ContentField("land", ContentType.Textures),
 			new ContentField("Parallaxes/layer1", ContentType.Textures),
 			new ContentField("Parallaxes/AspidParallaxNeb", ContentType.Textures),
+			new ContentField("floor1", ContentType.Audio),
+			new ContentField("floor2", ContentType.Audio),
+			new ContentField("floor3", ContentType.Audio),
+			new ContentField("floor4", ContentType.Audio),
+			new ContentField("floor5", ContentType.Audio),
         };
 		public static void ContentInit(Game1 game)
 		{
@@ -70,6 +79,15 @@ namespace monogametest
         {
 			return Load<T>(ContentField.GetPathByType(fileName, contentType));
         }
+		public static T[] LoadFilesByNumbers<T>(string filenamesWithoutNumber, int startnumber, ContentType contentType, int count)
+		{
+			List<T> values = new List<T>();
+			for (int i = startnumber; i < count; i++)
+			{
+				values.Add(Load<T>(filenamesWithoutNumber + i, contentType));
+			}
+			return values.ToArray();
+		}
     }
 }
 
