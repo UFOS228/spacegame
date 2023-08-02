@@ -1,42 +1,57 @@
 ﻿using System;
+using monogame_test;
+
 namespace monogametest.Components
 {
 	public class PlayerComponent : Component
 	{
         public bool isMoving = false;
 		//public float movementCooldown = 0.001f;
-        public int movementAmount = 10;
+        public int movementAmount = 5;
         public float stepSndCooldown = 0.5f;
-        public bool isCameraLocksOnPlayer = true;
+        public bool isCameraLocksOnPlayer = false;
         public SoundEffectCollection stepSounds = new SoundEffectCollection();
+        public PlayerIndex playerIndex;
         private bool isMoveCooldowns = false;
+
+        public PlayerComponent(PlayerIndex index)
+        {
+            playerIndex = index;
+        }
         public override void Init()
         {
             gameObject.AddComponent(new DelayComponent(stepSndCooldown));
             gameObject.GetComponent(out DelayComponent delComp);
             stepSounds.sounds = MyContentManager.LoadFilesByNumbers<SoundEffect>("floor", 1, ContentType.Audio, 5).ToList();
             delComp.OnDelay += OnStepSndCooldowned;
+            Game1.instance.cameraPointsCenter.Add(gameObject);
         }
         public override void Update()
 		{
             isMoving = false;
-			if (Keyboard.GetState().IsKeyDown(Keys.W))
+			if (Keyboard.GetState().IsKeyDown(Keys.W) && playerIndex == PlayerIndex.One)
 			{
 				PlMove(new Vector2(0, -movementAmount));
 			}
-            else if(Keyboard.GetState().IsKeyDown(Keys.S))
+            else if(Keyboard.GetState().IsKeyDown(Keys.S) && playerIndex == PlayerIndex.One)
 
             {
                 PlMove(new Vector2(0, movementAmount));
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            if (Keyboard.GetState().IsKeyDown(Keys.D) && playerIndex == PlayerIndex.One)
             {
                 PlMove(new Vector2(movementAmount, 0));
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.A))
+            else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerIndex == PlayerIndex.One)
             {
                 PlMove(new Vector2(-movementAmount, 0));
+            }
+
+            if (GamePad.GetState(playerIndex).ThumbSticks.Left.Length() != 0f && playerIndex != PlayerIndex.One)
+            {
+                PlMove(
+            new Vector2(GamePad.GetState(playerIndex).ThumbSticks.Left.X, GamePad.GetState(playerIndex).ThumbSticks.Left.Y));
             }
 
         }

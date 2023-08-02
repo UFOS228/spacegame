@@ -62,9 +62,6 @@ namespace monogametest
 			{
 				return min;
 			}
-			Console.WriteLine(min);
-			Console.WriteLine(max);
-			Console.WriteLine(Game1.instance.random.Next((int) (min * 100), (int) (max * 100)) / 100f);
 			return Game1.instance.random.Next((int)(min * 100), (int)(max * 100)) / 100f;
 		}
     }
@@ -86,6 +83,16 @@ namespace monogametest
 		{
 			return array[Game1.instance.random.Next(0, array.Length)];
 		}
+		public static Vector2 GeometricalCenter(params Vector2[] points)
+		{
+			Vector2 sum = Vector2.Zero;
+			foreach (var item in points)
+			{
+				sum += item;
+			}
+			return sum / points.Length;
+		}
+
 	}
 }
 
