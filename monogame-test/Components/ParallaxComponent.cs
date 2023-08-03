@@ -22,7 +22,7 @@ namespace monogametest.Components
 
         public override void Update()
         {
-			position = game.cameraPos * moveScale;
+			position = game.cameraPosLerped * moveScale;
 			position.X %= texture.Width * scale;
 			position.Y %= texture.Height * scale;
             position2.Y = position.Y;
@@ -58,6 +58,8 @@ namespace monogametest.Components
 			gameObject.game._spriteBatch.Draw(texture, position2, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, depth);
             gameObject.game._spriteBatch.Draw(texture, position3, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, depth);
             gameObject.game._spriteBatch.Draw(texture, position4, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, depth);
+            gameObject.game._spriteBatch.Draw(texture, position3 - new Vector2(0, texture.Height * scale), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, depth);
+            gameObject.game._spriteBatch.Draw(texture, position4 - new Vector2(0, texture.Height * scale), null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, depth);
         }
     }
 }

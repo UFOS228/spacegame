@@ -43,7 +43,7 @@ namespace monogametest
 			}
 			return obj.ToArray();
 		}
-		public static GameObject? FindObjectWithTag(string tag)
+		public static GameObject FindObjectWithTag(string tag)
 		{
 			try
 			{

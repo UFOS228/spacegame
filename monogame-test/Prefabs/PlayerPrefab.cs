@@ -15,10 +15,12 @@ namespace monogametest.GameObjectPrefabs
             base.Init();
             name = "Player";
             tags = new List<string> { "player" };
-            components = new List<Component>()
+            components = new List<object>()
             {
                 new PlayerComponent(index),
-                new RendererComponent(MyContentManager.Load<Texture2D>("sceleton", ContentType.Textures), Color.White, SpriteEffects.None, 0.1f)
+                new RendererComponent(MyContentManager.Load<Texture2D>("sceleton", ContentType.Textures), Color.White, SpriteEffects.None, 0.1f),
+                new PlayerInteraction(),
+                new InventoryComponent(),
             };
             scale = new Vector2(2);
         }

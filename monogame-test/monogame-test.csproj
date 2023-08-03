@@ -18,13 +18,14 @@
     <None Remove="Content\app.config" />
     <None Remove="Content\MontserratMedium-nRxlJ.ttf" />
     <None Remove="Content\File.spritefont" />
-    <None Remove="GameObjectPrefabs\" />
     <None Remove="Content\Textures\tile.png" />
     <None Remove="GameObjectArch\" />
     <None Remove="Content\MediumFont.ttf" />
-    <None Remove="GameObjectPrefabs\Parallaxes\" />
     <None Remove="Maps\" />
-    <None Remove="GameObjectPrefabs\Structures\" />
+    <None Remove="Prefabs\" />
+    <None Remove="Components\Items\" />
+    <None Remove="Prefabs\Items\" />
+    <None Remove="Prefabs\Items\Clothing\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -36,11 +37,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\" />
-    <Folder Include="GameObjectPrefabs\" />
     <Folder Include="GameObjectArch\" />
-    <Folder Include="GameObjectPrefabs\Parallaxes\" />
     <Folder Include="Maps\" />
-    <Folder Include="GameObjectPrefabs\Structures\" />
+    <Folder Include="Prefabs\" />
+    <Folder Include="Components\Items\" />
+    <Folder Include="Prefabs\Items\" />
+    <Folder Include="Prefabs\Items\Clothing\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

@@ -13,6 +13,11 @@ namespace monogame_test
         public GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
         public Vector2 cameraPos = new Vector2(0, 0);
+        public Vector2 cameraPosLerped
+        {
+            get;
+            private set;
+        }
         public Vector2 cameraPosCentered
         {
             get
@@ -26,9 +31,23 @@ namespace monogame_test
                     value.Y + (_graphics.PreferredBackBufferHeight / 2));
             }
         }
+        public Vector2 cameraPosCenteredLerped
+        {
+            get;
+            private set;
+        }
         public List<GameObject> cameraPointsCenter = new List<GameObject>();
-        public float minZoom = 0.5f;
-        public float zoom = 0;
+        public float minZoom = 0.3f;
+        //public float minZoomDistance = 1100f;
+        public float minZoomDistance
+        {
+            get
+            {
+                return _graphics.PreferredBackBufferHeight * 1.7f;
+            }
+        }
+        public float zoom = 1;
+        public float zoomLerped = 1;
         public float maxZoom = 1f;
         public float updateTimeDelta;
         public Random random;
@@ -52,6 +71,7 @@ namespace monogame_test
             //Спавн обьектов. TODO: Map system
             ObjectManager.SpawnObject(new PlayerPrefab(PlayerIndex.One), Vector2.Zero);
             ObjectManager.SpawnObject(new PlayerPrefab(PlayerIndex.Two), Vector2.Zero);
+            ObjectManager.SpawnObject(new PlayerPrefab(PlayerIndex.Three), new Vector2(0, 400));
             ObjectManager.SpawnObject(new WallPrefab(), Vector2.Zero);
             ObjectManager.SpawnObject(new Layer1ParallaxPrefab(), Vector2.Zero);
             ObjectManager.SpawnObject(new AspidParallaxNebPrefab(), Vector2.Zero);
@@ -71,11 +91,13 @@ namespace monogame_test
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            GameManager.Update();
             foreach (var item in ObjectManager.objectsOnMap)
             {
                 foreach (var component in item.components)
                 {
-                    component.Update();
+                    if (item.isActive)
+                        component.Update();
                 }
             }
             base.Update(gameTime);
@@ -83,7 +105,9 @@ namespace monogame_test
 
         protected override void Draw(GameTime gameTime)
         {
-
+            GameManager.OnDraw();
+            cameraPosCenteredLerped = Vector2.Lerp(cameraPosCenteredLerped, cameraPosCentered, 0.3f);
+            cameraPosLerped = Vector2.Lerp(cameraPosLerped, cameraPos, 0.3f);
             if (cameraPointsCenter.Count > 0)
             {
                 List<Vector2> poses = new List<Vector2>();
@@ -92,27 +116,27 @@ namespace monogame_test
                     poses.Add(-item.position);
                 }
                 cameraPosCentered = GameManager.GeometricalCenter(poses.ToArray());
-                zoom = Vector2.Distance(poses[0], GameManager.GeometricalCenter(poses.ToArray()));
+
+                zoom =
+                    /*Distance от 0 до 1*/(MathF.Abs(((Vector2.Distance(poses[0], GameManager.GeometricalCenter(poses.ToArray())) / minZoomDistance) > 1 ? 1 : (Vector2.Distance(poses[0], GameManager.GeometricalCenter(poses.ToArray())) / minZoomDistance))
+                    /*Инвертируем*/- 1)
+                    * maxZoom);
+                if (zoom < minZoom) zoom = minZoom;
+                //Console.WriteLine(zoom);
             }
+            zoomLerped = Vector2.Lerp(new Vector2(zoomLerped), new Vector2(zoom), 0.3f).X;
             GraphicsDevice.Clear(Color.Black);
-            var transform = Matrix.CreateTranslation(new Vector3(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2, 0)) *
+            var transform = Matrix.CreateTranslation(new Vector3(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2, 0) / zoom) *
                          Matrix.CreateRotationZ(0) * 
                          Matrix.CreateScale(new Vector3(zoom, zoom, 1));
-            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix:transform);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix:transform, blendState: BlendState.NonPremultiplied);
             //_spriteBatch.Draw(LoadedContent.ballText, ballPos, Color.White);
             foreach (var item in ObjectManager.objectsOnMap)
             {
-                if (item.TryGetComponent(out RendererComponent renderer))
-                {
-                    if (Vector2.Distance(cameraPosCentered, -item.position) <= (_graphics.PreferredBackBufferHeight + _graphics.PreferredBackBufferWidth) * zoom)
-                    {
-                        _spriteBatch.Draw(renderer.texture, item.position + cameraPos, null,
-                            renderer.color, item.rotation, new Vector2(renderer.texture.Width / 2, renderer.texture.Height / 2), item.scale, renderer.flipping, renderer.layerDepth);
-                    }
-                }
                 foreach (var component in item.components)
                 {
-                    component.OnDraw();
+                    if (item.isActive)
+                        component.OnDraw();
                 }
             }
 #if DEBUG

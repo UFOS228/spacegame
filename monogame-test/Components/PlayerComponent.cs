@@ -70,7 +70,7 @@ namespace monogametest.Components
         public void OnStepSndCooldowned()
         {
             if (!isMoving) return;
-            stepSounds.PlayRandom(1, new RandomGradient(-0.6f, 0.3f),0f);
+            stepSounds.Play3DRandom(game.cameraPosCenteredLerped, gameObject.position, 1, new RandomGradient(-0.6f, 0.3f));
         }
     }
 }

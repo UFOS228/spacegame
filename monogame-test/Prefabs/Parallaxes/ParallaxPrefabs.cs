@@ -11,7 +11,7 @@ namespace monogametest.GameObjectPrefabs.Parallaxes
             name = "Layer1Parallax";
             AddComponent(new ParallaxComponent(
                     MyContentManager.Load<Texture2D>("Parallaxes/layer1", ContentType.Textures),
-                    Color.White, 2, 1, 0.35f));
+                    Color.White, 6, 1, 0.35f));
         }
     }
     public class AspidParallaxNebPrefab : Layer1ParallaxPrefab
@@ -22,7 +22,7 @@ namespace monogametest.GameObjectPrefabs.Parallaxes
             name = "AspidParallaxNeb";
             SetComponent(new ParallaxComponent(
                 MyContentManager.Load<Texture2D>("Parallaxes/AspidParallaxNeb", ContentType.Textures),
-                Color.White, 1, 0.99f, 0.4f));
+                Color.White, 6, 0.99f, 0.4f));
         }
     }
 }

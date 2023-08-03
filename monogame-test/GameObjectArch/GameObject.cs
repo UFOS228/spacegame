@@ -4,7 +4,7 @@ namespace monogametest
 {
     public class GameObject
 	{
-		public GameObject(string nameOfObj, Component[] component, Vector2 pos, Vector2 scalee,
+		public GameObject(string nameOfObj, object[] component, Vector2 pos, Vector2 scalee,
 			float rot = 0, string[] tagsOfThisObj = null)
 		{
             name = nameOfObj;
@@ -14,7 +14,7 @@ namespace monogametest
 			scale = scalee;
 			rotation = rot;
         }
-        public GameObject(string nameOfObj, Component[] component, string[] tagsOfThisObj = null)
+        public GameObject(string nameOfObj, object[] component, string[] tagsOfThisObj = null)
         {
             name = nameOfObj;
 			if (tagsOfThisObj != null)tags = tagsOfThisObj.ToList();
@@ -22,12 +22,13 @@ namespace monogametest
         }
 		public GameObject() { }
 
+		public bool isActive = true;
 		public string name;
 		public List<string> tags;
 		public Vector2 position;
 		public float rotation;
 		public Vector2 scale;
-		public List<Component> components = new List<Component>();
+		public List<object> components = new List<object>();
 		public Game1 game;
 
 		public virtual void Init()
@@ -47,32 +48,47 @@ namespace monogametest
 		}
 		public void SetComponent<T>(T value) where T:Component
 		{
-            components[GetComponentIndex<T>()] = value;
+			for (int i = 0; i < components.Count; i++)
+			{
+                if (components[i] is T)
+                {
+					components[i] = value;
+                }
+            }
+            throw new NullReferenceException();
         }
-		public int GetComponentIndex<T>() where T: Component
+		//public int GetComponentIndex<T>() where T: Component
+		//{
+  //          for (int i = 0; i < components.Count; i++)
+  //          {
+		//		Console.WriteLine(components[i]);
+  //              if (components[i] is T)
+  //              {
+		//			return i;
+  //              }
+		//		else if (components[i].GetType().IsSubclassOf(typeof(T)))
+  //              {
+  //                  return i;
+  //              }
+  //          }
+		//	throw new NullReferenceException();
+  //      }
+		public T GetComponent<T>() where T: Component
 		{
             for (int i = 0; i < components.Count; i++)
             {
                 if (components[i] is T)
                 {
-					return i;
+                    return components[i] as T;
                 }
             }
-			throw new NullReferenceException();
-        }
-		public T GetComponent<T>() where T: Component
-		{
-            return (T)components[GetComponentIndex<T>()];
-		}
-        public void GetComponent<T>(out T comp) where T : Component
-        {
-            comp = (T)components[GetComponentIndex<T>()];
+            throw new NullReferenceException();
         }
         public bool TryGetComponent<T>(out T comp) where T: Component
 		{
 			try
 			{
-				comp = (T) components[GetComponentIndex<T>()];
+				comp = GetComponent<T>();
 				return true;
 			}
 			catch
