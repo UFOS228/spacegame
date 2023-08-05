@@ -13,7 +13,7 @@ namespace monogametest.Components
         public Texture2D textureOnCharacter;
         public float textureOnCharacterScale = 1;
         public bool isWeared = false;
-        public void OnUse(InventoryComponent inv)
+        public override void OnUse(InventoryComponent inv)
         {
             isWeared = !isWeared;
         }

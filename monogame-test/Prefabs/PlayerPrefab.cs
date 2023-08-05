@@ -15,7 +15,7 @@ namespace monogametest.GameObjectPrefabs
             base.Init();
             name = "Player";
             tags = new List<string> { "player" };
-            components = new List<object>()
+            components = new Component[]
             {
                 new PlayerComponent(index),
                 new RendererComponent(MyContentManager.Load<Texture2D>("sceleton", ContentType.Textures), Color.White, SpriteEffects.None, 0.1f),

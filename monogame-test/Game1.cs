@@ -97,7 +97,7 @@ namespace monogame_test
                 foreach (var component in item.components)
                 {
                     if (item.isActive)
-                        component.Update();
+                        ((Component)component).Update();
                 }
             }
             base.Update(gameTime);
@@ -136,7 +136,7 @@ namespace monogame_test
                 foreach (var component in item.components)
                 {
                     if (item.isActive)
-                        component.OnDraw();
+                        ((Component) component).OnDraw();
                 }
             }
 #if DEBUG

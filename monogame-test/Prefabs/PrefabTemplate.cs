@@ -9,10 +9,7 @@ namespace monogametest.GameObjectPrefabs
         {
             base.Init();
             name = "Sample text";
-            components = new List<object>()
-            {
-                new RendererComponent(MyContentManager.Load<Texture2D>("shuttlewhite"), Color.White, SpriteEffects.None, 1f)
-            };
+            
         }
     }
 }

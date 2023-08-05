@@ -13,7 +13,7 @@ namespace monogametest
 		{
 			foreach (var item in obj.components)
 			{
-				item.OnDestroy();
+				((Component) item).OnDestroy();
 			}
 			objectsOnMap.Remove(obj);
 		}
@@ -24,10 +24,10 @@ namespace monogametest
             obj.position = pos;
             obj.rotation = rot;
 			objectsOnMap.Add(obj);
-            for (int i = 0; i < obj.components.Count; i++)
+            for (int i = 0; i < obj.components.Length; i++)
             {
-                obj.components[i].gameObject = obj;
-                obj.components[i].Init();
+                ((Component)obj.components[i]).gameObject = obj;
+                ((Component)obj.components[i]).Init();
             }
 			return obj;
         }
