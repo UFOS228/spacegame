@@ -18,6 +18,7 @@ namespace monogametest.GameObjectPrefabs
             components = new Component[]
             {
                 new PlayerComponent(index),
+                new DelayComponent(0.5f),
                 new RendererComponent(MyContentManager.Load<Texture2D>("sceleton", ContentType.Textures), Color.White, SpriteEffects.None, 0.1f),
                 new PlayerInteraction(),
                 new InventoryComponent(),

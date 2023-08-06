@@ -58,33 +58,6 @@ namespace monogametest
             }
             throw new NullReferenceException();
         }
-		//public int GetComponentIndex<T>() where T: Component
-		//{
-  //          for (int i = 0; i < components.Count; i++)
-  //          {
-		//		Console.WriteLine(components[i]);
-  //              if (components[i] is T)
-  //              {
-		//			return i;
-  //              }
-		//		else if (components[i].GetType().IsSubclassOf(typeof(T)))
-  //              {
-  //                  return i;
-  //              }
-  //          }
-		//	throw new NullReferenceException();
-  //      }
-		public ref object GetComponentRef<T>() where T: Component
-		{
-            for (int i = 0; i < components.Length; i++)
-            {
-                if (components[i] is T)
-                {
-                    return ref components[i];
-                }
-            }
-            throw new NullReferenceException();
-        }
         public T GetComponent<T>() where T : Component
         {
             for (int i = 0; i < components.Length; i++)
@@ -98,16 +71,18 @@ namespace monogametest
         }
         public void GetComponent<T>(out T comp) where T : Component
         {
+			Console.WriteLine("f");
             for (int i = 0; i < components.Length; i++)
             {
-                if (components[i] is T)
+				Console.WriteLine(components[i].GetType() + "  " + typeof(T));
+				if (components[i] is T)
                 {
 					comp = components[i] as T;
                 }
             }
             throw new NullReferenceException();
         }
-        public bool TryGetComponent<T>(out T comp) where T: Component
+		public bool TryGetComponent<T>(out T comp) where T: Component
 		{
 			try
 			{

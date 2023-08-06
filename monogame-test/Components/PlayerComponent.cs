@@ -20,10 +20,11 @@ namespace monogametest.Components
         }
         public override void Init()
         {
-            gameObject.AddComponent(new DelayComponent(stepSndCooldown));
-            gameObject.GetComponent(out DelayComponent delComp);
+            //gameObject.AddComponent(new DelayComponent(stepSndCooldown));
             stepSounds.sounds = MyContentManager.LoadFilesByNumbers<SoundEffect>("floor", 1, ContentType.Audio, 5).ToList();
-            delComp.OnDelay += OnStepSndCooldowned;
+            gameObject.GetComponent(out DelayComponent comp);
+            comp.OnDelay += OnStepSndCooldowned;
+            comp.delayTime = stepSndCooldown;
             Game1.instance.cameraPointsCenter.Add(gameObject);
         }
         public override void Update()
