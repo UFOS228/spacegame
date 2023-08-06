@@ -39,9 +39,7 @@
     <Folder Include="Components\" />
     <Folder Include="GameObjectArch\" />
     <Folder Include="Maps\" />
-    <Folder Include="Prefabs\" />
     <Folder Include="Components\Items\" />
-    <Folder Include="Prefabs\Items\" />
     <Folder Include="Prefabs\Items\Clothing\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">

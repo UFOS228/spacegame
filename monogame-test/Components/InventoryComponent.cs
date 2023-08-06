@@ -54,7 +54,7 @@ namespace monogametest.Components
         public int inventoryXSize = 2;
         public List<InventorySlot> speedSlots = new List<InventorySlot>()
         {
-            new InventorySlot(InventorySlotType.leftHand),
+            new InventorySlot(InventorySlotType.leftHand) { itemInSlot = ObjectManager.SpawnObject(new TestItem(), Vector2.Zero)},
             new InventorySlot(InventorySlotType.rightHand),
         };
         public List<InventorySlot> inventorySlots = new List<InventorySlot>()
@@ -67,12 +67,13 @@ namespace monogametest.Components
 		public List<InventorySlot> wearSlots = new List<InventorySlot>()
         {
             new InventorySlot(InventorySlotType.shoes, Color.Orange),
-            new InventorySlot(InventorySlotType.suit, Color.Orange) { itemInSlot = new BasicUniformPrefab()},
+            new InventorySlot(InventorySlotType.suit, Color.Orange) { itemInSlot = ObjectManager.SpawnObject(new BasicUniformPrefab(), Vector2.Zero)},
             new InventorySlot(InventorySlotType.head, Color.Orange),
         };
 
         private int renderedSlots = 0;
         private int selectedSlot = 0;
+        private int selectedSpeedSlot = 0;
         private PlayerComponent playerComponent
         {
             get
@@ -80,55 +81,68 @@ namespace monogametest.Components
                 return GetComponent<PlayerComponent>();
             }
         }
+        public override void Init()
+        {
+            base.Init();
+            baseOffsetY = -(GetComponent<RendererComponent>().texture.Height * gameObject.scale.Y / inventoryScale);
+        }
         public override void OnDraw()
         {
             base.OnDraw();
             #region {Slot select}
-            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.X, Buttons.X))
+            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.C, Buttons.Y))
             {
                 selectedSlot++;
             }
-            if (selectedSlot >= renderedSlots)
+            if (selectedSlot >= inventorySlots.Count)
             {
                 selectedSlot = 0;
+            }
+            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.X, Buttons.X))
+            {
+                selectedSpeedSlot++;
+            }
+            if (selectedSpeedSlot >= speedSlots.Count)
+            {
+                selectedSpeedSlot = 0;
             }
             #endregion
             renderedSlots = 0;
             #region {SlotRendering}
-            float offsetX = -(speedSlots[0].slotTexture.Width * inventoryScale / 4);
+            float offsetX = -(speedSlots[0].slotTexture.Width * inventoryScale / 2);
             for (int i = 0; i < speedSlots.Count; i++)
             {
                 //Slot draw
-                game._spriteBatch.Draw(speedSlots[i].slotTexture, gameObject.position + game.cameraPosCentered + new Vector2(offsetX, baseOffsetY), null, i == selectedSlot ? Color.Cyan : speedSlots[i].slotTextureColor,
+                game._spriteBatch.Draw(speedSlots[i].slotTexture, gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, baseOffsetY), null, i == selectedSpeedSlot ? Color.Cyan : speedSlots[i].slotTextureColor,
                     0, GameManager.OriginCenter(speedSlots[i].slotTexture), inventoryScale, SpriteEffects.None, 0.02f);
-                //Item in slot draw
+                //DrawItemInSlot
                 if (speedSlots[i].itemInSlot != null)
-                game._spriteBatch.Draw(speedSlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv,
-                    gameObject.position + game.cameraPosCentered + new Vector2(offsetX, baseOffsetY), null, Color.White, 0,
-                    GameManager.OriginCenter(speedSlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv),
-                    speedSlots[i].itemInSlot.GetComponent<ItemComponent>().inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
+                    game._spriteBatch.Draw(speedSlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv,
+                        gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, baseOffsetY), null, Color.White, 0,
+                        GameManager.OriginCenter(speedSlots[i].slotTexture),
+                        inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
                 offsetX += speedSlots[i].slotTexture.Width * inventoryScale;
                 speedSlots[i].slotId = renderedSlots;
                 renderedSlots += 1;
             }
             if (GameManager.IsKeyOrButtonDown(playerComponent.playerIndex, Keys.Tab, Buttons.LeftTrigger))
             {
-                offsetX = -(inventorySlots[0].slotTexture.Width * inventoryScale / 4);
+                offsetX = -(inventorySlots[0].slotTexture.Width * inventoryScale / 2);
                 float offsetY = baseOffsetY - (speedSlots[0].slotTexture.Height * inventoryScale);
                 for (int i = 0; i < inventorySlots.Count; i++)
                 {
-                    game._spriteBatch.Draw(inventorySlots[i].slotTexture, gameObject.position + game.cameraPosCentered + new Vector2(offsetX, offsetY), null, i + speedSlots.Count == selectedSlot ? Color.Cyan : inventorySlots[i].slotTextureColor,
+                    game._spriteBatch.Draw(inventorySlots[i].slotTexture, gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, i == selectedSlot ? Color.OrangeRed : inventorySlots[i].slotTextureColor,
                         0, GameManager.OriginCenter(inventorySlots[i].slotTexture), inventoryScale, SpriteEffects.None, 0.02f);
                     //DrawItemInSlot
                     if (inventorySlots[i].itemInSlot != null)
                         game._spriteBatch.Draw(inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv,
-                            gameObject.position + game.cameraPosCentered + new Vector2(offsetX, offsetY), null, Color.White, 0,
+                            gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, Color.White, 0,
                             GameManager.OriginCenter(inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv),
                             inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
                     offsetX += inventorySlots[i].slotTexture.Width * inventoryScale;
                     if ((i + 1) % inventoryXSize == 0)
                     {
-                        offsetX = -(inventorySlots[0].slotTexture.Width * inventoryScale / 4);
+                        offsetX = -(inventorySlots[0].slotTexture.Width * inventoryScale / 2);
                         offsetY -= inventorySlots[i].slotTexture.Height * inventoryScale;
                     }
                     inventorySlots[i].slotId = renderedSlots;
@@ -136,23 +150,25 @@ namespace monogametest.Components
                 }
             }
             #endregion
+            renderedSlots = 0;
             #region {WearSlotsRendering}
             if (GameManager.IsKeyOrButtonDown(playerComponent.playerIndex, Keys.Tab, Buttons.LeftTrigger))
             {
-                offsetX = -((speedSlots[0].slotTexture.Width * inventoryScale / 4) + (inventorySlots[0].slotTexture.Width * inventoryScale));
+                offsetX = -((speedSlots[0].slotTexture.Width * inventoryScale / 2) + (inventorySlots[0].slotTexture.Width * inventoryScale));
                 float offsetY = baseOffsetY;
                 for (int i = 0; i < wearSlots.Count; i++)
                 {
-                    game._spriteBatch.Draw(wearSlots[i].slotTexture, gameObject.position + game.cameraPosCentered + new Vector2(offsetX, offsetY), null, wearSlots[i].slotTextureColor,
-                        0, new Vector2(wearSlots[i].slotTexture.Width * inventoryScale / 2, wearSlots[i].slotTexture.Height * inventoryScale / 2), inventoryScale, SpriteEffects.None, 0.02f);
+                    game._spriteBatch.Draw(wearSlots[i].slotTexture, gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, wearSlots[i].slotTextureColor,
+                        0, GameManager.OriginCenter(wearSlots[i].slotTexture), inventoryScale, SpriteEffects.None, 0.02f);
                     //DrawItemInSlot
                     if (wearSlots[i].itemInSlot != null)
                         game._spriteBatch.Draw(wearSlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv,
-                            gameObject.position + game.cameraPosCentered + new Vector2(offsetX, offsetY), null, Color.White, 0,
+                            gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, Color.White, 0,
                             GameManager.OriginCenter(wearSlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv),
                             wearSlots[i].itemInSlot.GetComponent<ItemComponent>().inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
                     offsetY -= wearSlots[i].slotTexture.Height * inventoryScale;
-                    inventorySlots[i].slotId = i;
+                    inventorySlots[i].slotId = renderedSlots;
+                    renderedSlots += 1;
                 }
             }
             #endregion

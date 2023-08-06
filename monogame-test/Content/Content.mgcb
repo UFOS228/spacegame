@@ -74,6 +74,18 @@
 /processorParam:TextureFormat=Color
 /build:shuttlewhite.png
 
+#begin Textures/Item/icon.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Item/icon.png;Textures/Item/skub.png
+
 #begin Textures/Item/Wearable/greyUniform.png
 /importer:TextureImporter
 /processor:TextureProcessor

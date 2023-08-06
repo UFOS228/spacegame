@@ -1,4 +1,5 @@
 ﻿using monogame_test;
+using System.Diagnostics;
 
 namespace monogametest
 {
@@ -51,9 +52,11 @@ namespace monogametest
 		{
 			for (int i = 0; i < components.Length; i++)
 			{
-                if (components[i] is T)
+				Debug.WriteLine(components[i].GetType().ToString() + "  " + typeof(T) + "  " + (components[i].GetType().Name == typeof(T).Name));
+				if (components[i] is T)
                 {
 					components[i] = value;
+					return;
                 }
             }
             throw new NullReferenceException();
@@ -62,22 +65,22 @@ namespace monogametest
         {
             for (int i = 0; i < components.Length; i++)
             {
-                if (components[i] is T)
+				//Debug.WriteLine(components[i].GetType().Name + "   " +  typeof(T).Name + "  " + components[i].GetType().IsSubclassOf(typeof(T)));
+                if (components[i].GetType().Name == typeof(T).Name || components[i].GetType().IsSubclassOf(typeof(T)))
                 {
                     return components[i] as T;
                 }
-            }
+			}
             throw new NullReferenceException();
         }
         public void GetComponent<T>(out T comp) where T : Component
         {
-			Console.WriteLine("f");
             for (int i = 0; i < components.Length; i++)
             {
-				Console.WriteLine(components[i].GetType() + "  " + typeof(T));
 				if (components[i] is T)
                 {
 					comp = components[i] as T;
+					return;
                 }
             }
             throw new NullReferenceException();
