@@ -1,7 +1,7 @@
 ﻿using System;
 using monogametest.Components;
 
-namespace monogametest.GameObjectPrefabs
+namespace monogametest.Prefabs
 {
 	public class PrefabTemplate : GameObject
 	{

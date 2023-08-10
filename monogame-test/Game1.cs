@@ -1,8 +1,9 @@
 ﻿
 using monogametest;
 using monogametest.Components;
-using monogametest.GameObjectPrefabs;
-using monogametest.GameObjectPrefabs.Parallaxes;
+using monogametest.Prefabs;
+using monogametest.Prefabs.Parallaxes;
+using System.Diagnostics;
 
 namespace monogame_test
 {
@@ -13,6 +14,14 @@ namespace monogame_test
         public GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
         public Vector2 cameraPos = new Vector2(0, 0);
+        public Color[] playerColors = new Color[]
+        {
+            Color.Cyan,
+            Color.Red,
+            Color.Green,
+            Color.Violet,
+        };
+        public float oneTileScale = 64;
         public Vector2 cameraPosLerped
         {
             get;
@@ -131,27 +140,27 @@ namespace monogame_test
                          Matrix.CreateScale(new Vector3(zoom, zoom, 1));
             _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix:transform, blendState: BlendState.NonPremultiplied);
             //_spriteBatch.Draw(LoadedContent.ballText, ballPos, Color.White);
-            foreach (var item in ObjectManager.objectsOnMap)
+            for (int i = 0; i < ObjectManager.objectsOnMap.Count; i++)
             {
-                foreach (var component in item.components)
+                for (int i1 = 0; i1 < ObjectManager.objectsOnMap[i].components.Length; i1++)
                 {
-                    if (item.isActive)
+                    object component = ObjectManager.objectsOnMap[i].components[i1];
+                    if (ObjectManager.objectsOnMap[i].isActive)
                         ((Component) component).OnDraw();
                 }
             }
 #if DEBUG
             if (Keyboard.GetState().IsKeyDown(Keys.I))
             {
-                Console.Clear();
-                Console.WriteLine("Debug:");
-                Console.WriteLine("CamPos:" + cameraPos);
-                Console.WriteLine("CamPosCentered:" + cameraPosCentered);
-                Console.WriteLine("------------Object manifest------------");
-                foreach (var item in ObjectManager.objectsOnMap)
+                Debug.WriteLine("Debug:");
+                Debug.WriteLine("CamPos:" + cameraPos);
+                Debug.WriteLine("CamPosCentered:" + cameraPosCentered);
+                Debug.WriteLine("------------Object manifest------------");
+                for (int i = 0; i < ObjectManager.objectsOnMap.Count; i++)
                 {
-                    Console.WriteLine("Object:" + item.name + " Pos:" + item.position);
+                    Debug.WriteLine("Object:" + ObjectManager.objectsOnMap[i].name + " Pos:" + ObjectManager.objectsOnMap[i].position);
                 }
-                Console.WriteLine("---------------------------------------");
+                Debug.WriteLine("---------------------------------------");
 
             }
 #endif

@@ -43,6 +43,30 @@
 /processorParam:Quality=Best
 /build:Audio/floor5.ogg
 
+#begin Audio/Fun/skub.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Fun/skub.ogg
+
+#begin Audio/Fun/skub2.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Fun/skub2.ogg
+
+#begin Audio/Fun/skub3.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Fun/skub3.ogg
+
+#begin Audio/Weapon/laser3.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/laser3.ogg
+
 #begin ball.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -84,7 +108,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Item/icon.png;Textures/Item/skub.png
+/build:Textures/Item/icon.png
 
 #begin Textures/Item/Wearable/greyUniform.png
 /importer:TextureImporter
@@ -193,6 +217,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Parallaxes/planet.png
+
+#begin Textures/Projectiles/bullet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Projectiles/bullet.png
 
 #begin Textures/sceleton.png
 /importer:TextureImporter

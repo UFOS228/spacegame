@@ -1,7 +1,7 @@
 ﻿using System;
 using monogametest.Components;
 
-namespace monogametest.GameObjectPrefabs
+namespace monogametest.Prefabs
 {
 	public class PlayerPrefab : GameObject
 	{
@@ -19,7 +19,7 @@ namespace monogametest.GameObjectPrefabs
             {
                 new PlayerComponent(index),
                 new DelayComponent(0.5f),
-                new RendererComponent(MyContentManager.Load<Texture2D>("sceleton", ContentType.Textures), Color.White, SpriteEffects.None, 0.1f),
+                new RendererComponent(MyContentManager.Load<Texture2D>("sceleton", ContentType.Textures), Color.White, 0.1f),
                 new PlayerInteraction(),
                 new InventoryComponent(),
             };

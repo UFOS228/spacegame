@@ -10,7 +10,7 @@ namespace monogametest.Components
 	//}
 	public class RendererComponent : Component
 	{
-		public RendererComponent(Texture2D texturee, Color colorr, SpriteEffects flippingg, float depthh)
+		public RendererComponent(Texture2D texturee, Color colorr, float depthh, SpriteEffects flippingg = SpriteEffects.None)
 		{
 			texture = texturee;
 			color = colorr;

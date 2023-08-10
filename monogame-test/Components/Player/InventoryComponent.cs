@@ -89,8 +89,8 @@ namespace monogametest.Components
         public override void OnDraw()
         {
             base.OnDraw();
-            #region {Slot select}
-            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.C, Buttons.Y))
+            #region {Slot select n interact}
+            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.C, Buttons.RightShoulder))
             {
                 selectedSlot++;
             }
@@ -106,6 +106,31 @@ namespace monogametest.Components
             {
                 selectedSpeedSlot = 0;
             }
+
+            //Interact
+            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.Space, Buttons.RightTrigger))
+            {
+                if (GameManager.IsKeyOrButtonDown(playerComponent.playerIndex, Keys.Tab, Buttons.LeftTrigger))
+                {
+                    if (inventorySlots[selectedSlot].itemInSlot == null && speedSlots[selectedSpeedSlot].itemInSlot != null)
+                    {
+                        inventorySlots[selectedSlot].itemInSlot = speedSlots[selectedSpeedSlot].itemInSlot;
+                        speedSlots[selectedSpeedSlot].itemInSlot = null;
+                    }
+                    else if (inventorySlots[selectedSlot].itemInSlot != null && speedSlots[selectedSpeedSlot].itemInSlot == null)
+                    {
+                        speedSlots[selectedSpeedSlot].itemInSlot = inventorySlots[selectedSlot].itemInSlot;
+                        inventorySlots[selectedSlot].itemInSlot = null;
+                    }
+                }
+                else if (speedSlots[selectedSpeedSlot].itemInSlot != null)
+                    speedSlots[selectedSpeedSlot].itemInSlot.GetComponent<ItemComponent>().OnUse(this);
+            }
+            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.Z, Buttons.A))
+            {
+                if (speedSlots[selectedSpeedSlot].itemInSlot != null)
+                    speedSlots[selectedSpeedSlot].itemInSlot.GetComponent<ItemComponent>().OnAltUse(this);
+            }
             #endregion
             renderedSlots = 0;
             #region {SlotRendering}
@@ -117,10 +142,13 @@ namespace monogametest.Components
                     0, GameManager.OriginCenter(speedSlots[i].slotTexture), inventoryScale, SpriteEffects.None, 0.02f);
                 //DrawItemInSlot
                 if (speedSlots[i].itemInSlot != null)
-                    game._spriteBatch.Draw(speedSlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv,
+                {
+                    speedSlots[i].itemInSlot.GetComponent(out ItemComponent item);
+                    game._spriteBatch.Draw(item.textureInInv,
                         gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, baseOffsetY), null, Color.White, 0,
                         GameManager.OriginCenter(speedSlots[i].slotTexture),
-                        inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
+                        item.inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
+                }
                 offsetX += speedSlots[i].slotTexture.Width * inventoryScale;
                 speedSlots[i].slotId = renderedSlots;
                 renderedSlots += 1;

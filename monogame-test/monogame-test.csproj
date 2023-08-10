@@ -36,7 +36,6 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.263" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
     <Folder Include="GameObjectArch\" />
     <Folder Include="Maps\" />
     <Folder Include="Components\Items\" />

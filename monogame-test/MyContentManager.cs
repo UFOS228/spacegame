@@ -69,26 +69,29 @@ namespace monogametest
 			new ContentField("floor4", ContentType.Audio),
 			new ContentField("floor5", ContentType.Audio),
         };
-		public static void ContentInit(Game1 game)
+		private static Game1 game;
+		public static void ContentInit(Game1 gamee)
 		{
-			foreach (var contentField in contentFields)
-            {
-				contentField.value = game.Content.Load<object>(contentField.path);
-            }
+			//foreach (var contentField in contentFields)
+   //         {
+			//	contentField.value = game.Content.Load<object>(contentField.path);
+   //         }
+			game = gamee;
 		}
 
 		public static T Load<T>(string path)
 		{
-			foreach (var contentField in contentFields)
-			{
-				//Console.WriteLine(contentField.path);
-				if (contentField.path == path)
-                {
-					return (T) contentField.value;
-				}
-			}
-			//Console.WriteLine("   " + path);
-			throw new NullReferenceException();
+			//foreach (var contentField in contentFields)
+			//{
+			//	//Console.WriteLine(contentField.path);
+			//	if (contentField.path == path)
+   //             {
+			//		return (T) contentField.value;
+			//	}
+			//}
+			////Console.WriteLine("   " + path);
+			//throw new NullReferenceException();
+			return game.Content.Load<T>(path);
 		}
         public static T Load<T>(string fileName, ContentType contentType)
         {

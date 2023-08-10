@@ -8,36 +8,28 @@ namespace monogametest
 {
 	public class SoundEffectCollection
 	{
+		public SoundEffectCollection() { }
+		public SoundEffectCollection(SoundEffect[] snds) 
+		{
+			sounds = snds.ToList();
+		}
 
 		public List<SoundEffect> sounds;
 		public void Play(int sndIndex, RandomGradient volume, RandomGradient pitch, RandomGradient pan)
 		{
-			var snd = sounds[sndIndex].CreateInstance();
-			snd.Volume = volume.Get();
-			snd.Pitch = pitch.Get();
-			snd.Pan = pan.Get();
-			snd.Play();
+			GameManager.PlaySound(sounds[sndIndex], volume, pitch, pan);
 		}
-        public void Play3D(int sndIndex, Vector2 listenerPos, Vector2 emitterPos,  RandomGradient volume, RandomGradient pitch)
+        public void Play3D(int sndIndex, Vector2 emitterPos,  RandomGradient volume, RandomGradient pitch)
         {
-            var snd = sounds[sndIndex].CreateInstance();
-			var listener = new AudioListener();
-			var emitter = new AudioEmitter();
-			listener.Position = new Vector3(listenerPos, 0);
-			emitter.DopplerScale = 0;
-			emitter.Position = new Vector3(emitterPos, 0);
-            snd.Volume = volume.Get();
-			snd.Pitch = pitch.Get();
-            snd.Apply3D(listener, emitter);
-            snd.Play();
+            GameManager.PlaySound3D(sounds[sndIndex], emitterPos, volume, pitch);
         }
 		public void PlayRandom(RandomGradient volume, RandomGradient pitch, RandomGradient pan)
 		{
 			Play(Game1.instance.random.Next(0, sounds.Count), volume, pitch, pan);
 		}
-        public void Play3DRandom(Vector2 listenerPos, Vector2 emitterPos, RandomGradient volume, RandomGradient pitch)
+        public void Play3DRandom(Vector2 emitterPos, RandomGradient volume, RandomGradient pitch)
         {
-            Play3D(Game1.instance.random.Next(0, sounds.Count), listenerPos, emitterPos, volume, pitch);
+            Play3D(Game1.instance.random.Next(0, sounds.Count), emitterPos, volume, pitch);
         }
     }
 	public class RandomGradient
@@ -116,7 +108,7 @@ namespace monogametest
 		public static bool IsKeyOrButtonDown(PlayerIndex index, Keys key, Buttons button)
 		{
 			return (index == PlayerIndex.One) ? Keyboard.GetState().IsKeyDown(key)
-				: GamePad.GetState(index).IsButtonDown(button);
+				: GamePad.GetState(index - 1).IsButtonDown(button);
         }
         public static bool IsKeyOrButtonUp(PlayerIndex index, Keys key, Buttons button)
         {
@@ -136,8 +128,42 @@ namespace monogametest
         {
             return new Vector2(texture.Width * scale / 2, texture.Height * scale / 2);
         }
-        #endregion
-        private static List<Buttons> downedButtons2 = new();
+		public static float LootAtPoint(Vector2 a, Vector2 b)
+        {
+			return MathF.Atan2(b.Y - a.Y, b.X - a.X);
+        }
+		public static void PlaySound(SoundEffect sound, RandomGradient volume, RandomGradient pitch, RandomGradient pan)
+		{
+			var snd = sound.CreateInstance();
+			snd.Volume = volume.Get();
+			snd.Pitch = pitch.Get();
+			snd.Pan = pan.Get();
+			snd.Play();
+		}
+		public static void PlaySound3D(SoundEffect sound, Vector2 emitterPos, RandomGradient volume, RandomGradient pitch)
+		{
+			var snd = sound.CreateInstance();
+			var listener = new AudioListener();
+			var emitter = new AudioEmitter();
+			listener.Position = new Vector3(-Game1.instance.cameraPosCenteredLerped, 0);
+			emitter.DopplerScale = 0;
+			emitter.Position = new Vector3(emitterPos, 0);
+			snd.Volume = volume.Get();
+			snd.Pitch = pitch.Get();
+			snd.Apply3D(listener, emitter);
+			snd.Play();
+		}
+		public static Vector2 FromViewSpaceToWorld(Vector2 vectorView)
+        {
+			return vectorView + Game1.instance.cameraPosCentered;
+		}
+		public static Vector2 MoveTowards(Vector2 a, Vector2 b, float amount)
+        {
+			if (amount == 0) return a; 
+			return (a - b) * amount;
+		}
+		#endregion
+		private static List<Buttons> downedButtons2 = new();
 		private static List<Buttons> downedButtons3 = new();
 		private static List<Buttons> downedButtons4 = new();
         private static List<Keys> downedKeys = new();
@@ -159,7 +185,7 @@ namespace monogametest
                 GetPlayerPressedButtonsList((PlayerIndex) i, out List<Buttons> downedButtons);
                 for (int i1 = 0; i1 < downedButtons.Count; i1++)
 				{
-                    if (GamePad.GetState((PlayerIndex) i).IsButtonDown(downedButtons[i1]))
+                    if (GamePad.GetState((PlayerIndex) i - 1).IsButtonUp(downedButtons[i1]))
 					{
 						downedButtons2.Remove(downedButtons[i1]);
 					}
@@ -179,7 +205,7 @@ namespace monogametest
 		}
 		public static bool GetOnceButtonDown(PlayerIndex plIndex, Buttons button)
         {
-			if (!GamePad.GetState(plIndex).IsButtonDown(button)) return false;
+			if (!GamePad.GetState(plIndex - 1).IsButtonDown(button)) return false;
 			List<Buttons> pressedButtons;
             GetPlayerPressedButtonsList(plIndex, out pressedButtons);
             if (pressedButtons.Contains(button))

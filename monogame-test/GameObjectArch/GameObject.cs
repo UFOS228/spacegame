@@ -85,18 +85,30 @@ namespace monogametest
             }
             throw new NullReferenceException();
         }
+		public void GetComponents<T>(out T[] comps) where T : Component
+		{
+			List<T> addedComps = new List<T>();
+			for (int i = 0; i < components.Length; i++)
+			{
+				if (components[i] is T)
+				{
+					addedComps.Add(components[i] as T);
+				}
+			}
+			comps = addedComps.ToArray();
+		}
 		public bool TryGetComponent<T>(out T comp) where T: Component
 		{
-			try
+			for (int i = 0; i < components.Length; i++)
 			{
-				comp = GetComponent<T>();
-				return true;
+				if (components[i] is T)
+				{
+					comp = components[i] as T;
+					return true;
+				}
 			}
-			catch
-			{
-				comp = null;
-				return false;
-			}
+			comp = null;
+			return false;
 		}
 		public void AddTag(string tag)
 		{

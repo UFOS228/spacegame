@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using monogame_test;
 
 namespace monogametest.Components
@@ -49,10 +50,9 @@ namespace monogametest.Components
                 PlMove(new Vector2(-movementAmount, 0));
             }
 
-            if (GamePad.GetState(playerIndex).ThumbSticks.Left.Length() != 0f && playerIndex != PlayerIndex.One)
+            if (GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Length() != 0f && playerIndex != PlayerIndex.One)
             {
-                PlMove(
-            new Vector2(GamePad.GetState(playerIndex).ThumbSticks.Left.X, GamePad.GetState(playerIndex).ThumbSticks.Left.Y));
+                PlMove(new Vector2(GamePad.GetState(playerIndex - 1).ThumbSticks.Left.X, -GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Y) * movementAmount);
             }
 
         }
@@ -71,7 +71,7 @@ namespace monogametest.Components
         public void OnStepSndCooldowned()
         {
             if (!isMoving) return;
-            stepSounds.Play3DRandom(game.cameraPosCenteredLerped, gameObject.position, 1, new RandomGradient(-0.6f, 0.3f));
+            stepSounds.Play3DRandom(gameObject.position, 1, new RandomGradient(-0.6f, 0.3f));
         }
     }
 }
