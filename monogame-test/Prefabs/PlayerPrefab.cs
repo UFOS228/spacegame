@@ -22,6 +22,8 @@ namespace monogametest.Prefabs
                 new RendererComponent(MyContentManager.Load<Texture2D>("sceleton", ContentType.Textures), Color.White, 0.1f),
                 new PlayerInteraction(),
                 new InventoryComponent(),
+                new CollisionComponent(new Vector2(45,64)),
+                new PhysicsComponent() {bounceFactor = 1},
             };
             scale = new Vector2(2);
         }

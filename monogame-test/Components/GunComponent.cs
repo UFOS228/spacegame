@@ -39,6 +39,7 @@ namespace monogametest.Components
         {
             if (!isCooldowned) return;
             ObjectManager.SpawnObject((GameObject) Activator.CreateInstance(bullet), pos, rot).GetComponent(out PhysicsComponent bulletPhysComp);
+            bulletPhysComp.ignore.Add(gameObject);
             bulletPhysComp.velocity = new Vector2(MathF.Cos(rot), MathF.Sin(rot)) * projSpeed;
             bulletPhysComp.friction = 0;
             if (shootSnd != null) shootSnd.Play3DRandom(pos, 1, new RandomGradient(-0.2f, 0.1f));

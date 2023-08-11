@@ -9,13 +9,14 @@ namespace monogametest
 	{
 		public static Game1 game;
 		public static List<GameObject> objectsOnMap = new List<GameObject>();
+		public static List<GameObject> destroyQueue = new List<GameObject>();
 		public static void Destroy(GameObject obj)
 		{
 			foreach (var item in obj.components)
 			{
 				((Component) item).OnDestroy();
 			}
-			objectsOnMap.Remove(obj);
+			destroyQueue.Add(obj);
 		}
 		public static GameObject SpawnObject(GameObject obj, Vector2 pos, float rot = 0)
 		{
@@ -54,6 +55,14 @@ namespace monogametest
 				return null;
 			}
 		}
+		public static void DestroyAllQueue()
+        {
+            foreach (var item in destroyQueue)
+            {
+				objectsOnMap.Remove(item);
+			}
+			destroyQueue.Clear();
+        }
 	}
 }
 

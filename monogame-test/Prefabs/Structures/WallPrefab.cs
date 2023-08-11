@@ -11,8 +11,11 @@ namespace monogametest.Prefabs
             base.Init();
             name = "Wall";
             scale = new Vector2(2);
-            AddComponent(new RendererComponent(
-                    MyContentManager.Load<Texture2D>("Structures/full", ContentType.Textures), Color.White, 0.8f));
+            components = new Component[]
+            {
+                new RendererComponent(MyContentManager.Load<Texture2D>("Structures/full", ContentType.Textures), Color.White, 0.8f),
+                new CollisionComponent(new Vector2(64)),
+            };
         }
 	}
 }

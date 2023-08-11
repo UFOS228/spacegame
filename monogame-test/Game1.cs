@@ -60,6 +60,8 @@ namespace monogame_test
         public float maxZoom = 1f;
         public float updateTimeDelta;
         public Random random;
+        public bool isRenderColliders = true;
+
 
         public Game1()
         {
@@ -78,10 +80,10 @@ namespace monogame_test
             ObjectManager.game = this;
             cameraPosCentered = Vector2.Zero;
             //Спавн обьектов. TODO: Map system
-            ObjectManager.SpawnObject(new PlayerPrefab(PlayerIndex.One), Vector2.Zero);
+            ObjectManager.SpawnObject(new PlayerPrefab(PlayerIndex.One), new Vector2(0, -400));
             ObjectManager.SpawnObject(new PlayerPrefab(PlayerIndex.Two), Vector2.Zero);
             ObjectManager.SpawnObject(new PlayerPrefab(PlayerIndex.Three), new Vector2(0, 400));
-            ObjectManager.SpawnObject(new WallPrefab(), Vector2.Zero);
+            ObjectManager.SpawnObject(new WallPrefab(), new Vector2(100, 0));
             ObjectManager.SpawnObject(new Layer1ParallaxPrefab(), Vector2.Zero);
             ObjectManager.SpawnObject(new AspidParallaxNebPrefab(), Vector2.Zero);
             ObjectManager.SpawnObject(new GameObject("grid", new Component[]{new TilemapComponent()}), Vector2.Zero);
@@ -101,15 +103,16 @@ namespace monogame_test
                 Exit();
 
             GameManager.Update();
-            foreach (var item in ObjectManager.objectsOnMap)
+            for (int i = 0; i < ObjectManager.objectsOnMap.Count; i++)
             {
-                foreach (var component in item.components)
+                for (int i1 = 0; i1 < ObjectManager.objectsOnMap[i].components.Length; i1++)
                 {
-                    if (item.isActive)
-                        ((Component)component).Update();
+                    if (ObjectManager.objectsOnMap[i].isActive)
+                        ((Component)ObjectManager.objectsOnMap[i].components[i1]).Update();
                 }
             }
             base.Update(gameTime);
+            ObjectManager.DestroyAllQueue();
         }
 
         protected override void Draw(GameTime gameTime)

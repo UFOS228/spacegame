@@ -7,6 +7,7 @@ namespace monogametest.Components
 	public class PlayerComponent : Component
 	{
         public bool isMoving = false;
+        public float health = 100;
 		//public float movementCooldown = 0.001f;
         public int movementAmount = 5;
         public float stepSndCooldown = 0.5f;
@@ -14,6 +15,8 @@ namespace monogametest.Components
         public SoundEffectCollection stepSounds = new SoundEffectCollection();
         public PlayerIndex playerIndex;
         private bool isMoveCooldowns = false;
+
+        private PhysicsComponent physicsComponent;
 
         public PlayerComponent(PlayerIndex index)
         {
@@ -27,32 +30,34 @@ namespace monogametest.Components
             comp.OnDelay += OnStepSndCooldowned;
             comp.delayTime = stepSndCooldown;
             Game1.instance.cameraPointsCenter.Add(gameObject);
+            GetComponent(out physicsComponent);
         }
         public override void Update()
 		{
             isMoving = false;
 			if (Keyboard.GetState().IsKeyDown(Keys.W) && playerIndex == PlayerIndex.One)
 			{
-				PlMove(new Vector2(0, -movementAmount));
+				PlMove(new Vector2(physicsComponent.velocity.X, -movementAmount));
 			}
             else if(Keyboard.GetState().IsKeyDown(Keys.S) && playerIndex == PlayerIndex.One)
 
             {
-                PlMove(new Vector2(0, movementAmount));
+                PlMove(new Vector2(physicsComponent.velocity.X, movementAmount));
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D) && playerIndex == PlayerIndex.One)
             {
-                PlMove(new Vector2(movementAmount, 0));
+                PlMove(new Vector2(movementAmount, physicsComponent.velocity.Y));
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerIndex == PlayerIndex.One)
             {
-                PlMove(new Vector2(-movementAmount, 0));
+                PlMove(new Vector2(-movementAmount, physicsComponent.velocity.Y));
             }
 
             if (GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Length() != 0f && playerIndex != PlayerIndex.One)
             {
-                PlMove(new Vector2(GamePad.GetState(playerIndex - 1).ThumbSticks.Left.X, -GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Y) * movementAmount);
+                GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Normalize();
+                PlMove(new Vector2((float)(double)GamePad.GetState(playerIndex - 1).ThumbSticks.Left.X * movementAmount, -(float)(double)GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Y * movementAmount));
             }
 
         }
@@ -61,7 +66,8 @@ namespace monogametest.Components
             isMoving = true;
 			if (!isMoveCooldowns)
 			{
-                gameObject.position += direction;
+                //gameObject.position += direction;
+                physicsComponent.velocity = direction;
                 if (isCameraLocksOnPlayer)
                 {
                     gameObject.game.cameraPosCentered = new Vector2(-gameObject.position.X, -gameObject.position.Y);

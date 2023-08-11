@@ -19,7 +19,7 @@ namespace monogametest.Components
             base.OnInteract(player);
             player.GetComponent(out PlayerInteraction playerInteraction);
             if (playerInteraction.dir == Vector2.Zero) return;
-            gun.Shoot(player.gameObject.position, MathF.Atan2(playerInteraction.dir.Y, playerInteraction.dir.X));
+            gun.Shoot(player.gameObject.position + (playerInteraction.dir * playerInteraction.arrowDistance), MathF.Atan2(playerInteraction.dir.Y, playerInteraction.dir.X));
         }
     }
 }

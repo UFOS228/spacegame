@@ -162,6 +162,11 @@ namespace monogametest
 			if (amount == 0) return a; 
 			return (a - b) * amount;
 		}
+		public static Color EditAlpha(Color color, byte alpha)
+        {
+			color.A = alpha;
+			return color;
+        }
 		#endregion
 		private static List<Buttons> downedButtons2 = new();
 		private static List<Buttons> downedButtons3 = new();

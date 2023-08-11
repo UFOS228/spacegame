@@ -61,6 +61,90 @@
 /processorParam:Quality=Best
 /build:Audio/Fun/skub3.ogg
 
+#begin Audio/Weapon/Hits/bullet_meat1.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/bullet_meat1.ogg
+
+#begin Audio/Weapon/Hits/bullet_meat2.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/bullet_meat2.ogg
+
+#begin Audio/Weapon/Hits/bullet_meat3.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/bullet_meat3.ogg
+
+#begin Audio/Weapon/Hits/bullet_meat4.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/bullet_meat4.ogg
+
+#begin Audio/Weapon/Hits/energy_meat1.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/energy_meat1.ogg
+
+#begin Audio/Weapon/Hits/energy_meat2.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/energy_meat2.ogg
+
+#begin Audio/Weapon/Hits/energy_metal1.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/energy_metal1.ogg
+
+#begin Audio/Weapon/Hits/energy_metal2.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/energy_metal2.ogg
+
+#begin Audio/Weapon/Hits/laser_sear_wall.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/laser_sear_wall.ogg
+
+#begin Audio/Weapon/Hits/ric1.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/ric1.ogg
+
+#begin Audio/Weapon/Hits/ric2.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/ric2.ogg
+
+#begin Audio/Weapon/Hits/ric3.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/ric3.ogg
+
+#begin Audio/Weapon/Hits/ric4.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/ric4.ogg
+
+#begin Audio/Weapon/Hits/ric5.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Weapon/Hits/ric5.ogg
+
 #begin Audio/Weapon/laser3.ogg
 /importer:OggImporter
 /processor:SoundEffectProcessor
