@@ -101,7 +101,10 @@ namespace monogame_test
             //updateTimeDelta = gameTime.ElapsedGameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            if (Keyboard.GetState().IsKeyDown(Keys.F11))
+            {
+                _graphics.ToggleFullScreen();
+            }
             GameManager.Update();
             for (int i = 0; i < ObjectManager.objectsOnMap.Count; i++)
             {

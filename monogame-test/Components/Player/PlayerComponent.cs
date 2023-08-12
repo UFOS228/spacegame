@@ -4,12 +4,13 @@ using monogame_test;
 
 namespace monogametest.Components
 {
-	public class PlayerComponent : Component
-	{
+	public class PlayerComponent : PhysicsComponent
+    {
         public bool isMoving = false;
         public float health = 100;
 		//public float movementCooldown = 0.001f;
         public int movementAmount = 5;
+        public float shiftMultiplier = 0.5f;
         public float stepSndCooldown = 0.5f;
         public bool isCameraLocksOnPlayer = false;
         public SoundEffectCollection stepSounds = new SoundEffectCollection();
@@ -24,6 +25,7 @@ namespace monogametest.Components
         }
         public override void Init()
         {
+            base.Init();
             //gameObject.AddComponent(new DelayComponent(stepSndCooldown));
             stepSounds.sounds = MyContentManager.LoadFilesByNumbers<SoundEffect>("floor", 1, ContentType.Audio, 5).ToList();
             gameObject.GetComponent(out DelayComponent comp);
@@ -35,29 +37,33 @@ namespace monogametest.Components
         public override void Update()
 		{
             isMoving = false;
-			if (Keyboard.GetState().IsKeyDown(Keys.W) && playerIndex == PlayerIndex.One)
+
+            if (Keyboard.GetState().IsKeyDown(Keys.W) && playerIndex == PlayerIndex.One)
 			{
-				PlMove(new Vector2(physicsComponent.velocity.X, -movementAmount));
+				PlMove(new Vector2(physicsComponent.velocity.X, -movementAmount * (Keyboard.GetState().IsKeyDown(Keys.LeftShift) ? shiftMultiplier : 1)));
 			}
             else if(Keyboard.GetState().IsKeyDown(Keys.S) && playerIndex == PlayerIndex.One)
 
             {
-                PlMove(new Vector2(physicsComponent.velocity.X, movementAmount));
+                PlMove(new Vector2(physicsComponent.velocity.X, movementAmount * (Keyboard.GetState().IsKeyDown(Keys.LeftShift) ? shiftMultiplier : 1)));
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D) && playerIndex == PlayerIndex.One)
             {
-                PlMove(new Vector2(movementAmount, physicsComponent.velocity.Y));
+                PlMove(new Vector2(movementAmount * (Keyboard.GetState().IsKeyDown(Keys.LeftShift) ? shiftMultiplier : 1), physicsComponent.velocity.Y));
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerIndex == PlayerIndex.One)
             {
-                PlMove(new Vector2(-movementAmount, physicsComponent.velocity.Y));
+                PlMove(new Vector2(-movementAmount * (Keyboard.GetState().IsKeyDown(Keys.LeftShift) ? shiftMultiplier : 1), physicsComponent.velocity.Y));
             }
 
             if ((MathF.Round(GamePad.GetState(playerIndex - 1).ThumbSticks.Left.X, 1) != 0f || MathF.Round(GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Y, 1) != 0f) && playerIndex != PlayerIndex.One)
             {
-                PlMove(new Vector2((float)(double)GamePad.GetState(playerIndex - 1).ThumbSticks.Left.X * movementAmount, -(float)(double)GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Y * movementAmount));
+                var vector = GamePad.GetState(playerIndex - 1).ThumbSticks.Left;
+                vector.Y = -vector.Y;
+                PlMove(Vector2.Round(vector * movementAmount));
             }
+            base.Update();
 
         }
         public void PlMove(Vector2 direction, bool isCooldowns = false)
