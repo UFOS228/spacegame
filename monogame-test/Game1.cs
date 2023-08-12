@@ -101,9 +101,20 @@ namespace monogame_test
             //updateTimeDelta = gameTime.ElapsedGameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.F11))
+            if (GameManager.GetOnceKeyDown(Keys.F11))
             {
+                if (_graphics.IsFullScreen)
+                {
+                    _graphics.PreferredBackBufferWidth = 800;
+                    _graphics.PreferredBackBufferHeight = 480;
+                    _graphics.ToggleFullScreen();
+                    _graphics.ApplyChanges();
+                    return;
+                }
+                _graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+                _graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
                 _graphics.ToggleFullScreen();
+                _graphics.ApplyChanges();
             }
             GameManager.Update();
             for (int i = 0; i < ObjectManager.objectsOnMap.Count; i++)

@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Linq;
 using monogame_test;
+using System.Diagnostics;
 
 namespace monogametest.Components
 {
@@ -19,7 +20,6 @@ namespace monogametest.Components
         public override void Init()
         {
             base.Init();
-            tileTexture = new Texture2D(Game1.instance._graphics.GraphicsDevice, 32, 32);
             palleteId = 0;
         }
     }
@@ -34,18 +34,60 @@ namespace monogametest.Components
     }
 	public class TilemapComponent : Component
 	{
-		public static List<GameObject> tilePallete = new List<GameObject>();
-		public int[,] tiles;
+		public static List<Tile> tilePallete = new List<Tile>();
+        public static float tilemapsDepth = 0.9f;
+        public static float tilemapsScale = 2;
+        public int[,] tiles;
 
         public override void Init()
         {
-            Type ourtype = typeof(Tile);
-            IEnumerable<Type> list = Assembly.GetAssembly(ourtype).GetTypes().Where(type => type.IsSubclassOf(ourtype));
+            IEnumerable<Type> list = Assembly.GetAssembly(typeof(Tile)).GetTypes().Where(type => type.IsSubclassOf(typeof(Tile)));
+            foreach (var item in list)
+            {
+                tilePallete.Add((Tile) Activator.CreateInstance(item));
+            }
+            foreach (var tile in tilePallete)
+            {
+                tile.Init();
+            }
+            tiles = new int[,]
+            {
+                {0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 1, 0, 0, 0},
+                {0, 0, 1, 1, 1, 0, 0},
+                {0, 1, 0, 1, 0, 1, 0},
+                {0, 0, 0, 1, 0, 0, 0},
+                {0, 0, 0, 1, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0},
+            };
         }
         public override void OnDraw()
 		{
-			//game._spriteBatch.Draw();
+            for (int Y = 0; Y < tiles.GetLength(0); Y++)
+            {
+                for (int X = 0; X < tiles.GetLength(1); X++)
+                {
+                    //Debug.WriteLine(FindTile(tiles[Y, X]).tileTexture.Width);
+                    if (FindTile(tiles[Y, X]).tileTexture != null)
+                    game._spriteBatch.Draw(
+                        FindTile(tiles[Y,X]).tileTexture, 
+                        new Vector2((X * game.oneTileScale) + gameObject.position.X + game.cameraPosCenteredLerped.X, (Y * game.oneTileScale) + gameObject.position.Y + game.cameraPosCenteredLerped.Y), 
+                        null, Color.White, 0, Vector2.Zero, tilemapsScale, SpriteEffects.None, tilemapsDepth);
+                }
+            }
 		}
+        public static Tile FindTile(int id)
+        {
+            foreach (var tile in tilePallete)
+            {
+                if (tile.palleteId == id)
+                {
+                    return tile;
+                }
+            }
+            throw new Exception($"Tile under {id} id, not finded!");
+        }
     }
 }
 
