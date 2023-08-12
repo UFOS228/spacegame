@@ -50,7 +50,7 @@ namespace monogametest.Components
                         }
                         else
                         {
-                            velocity.X = -velocity.X * 0.001f;
+                            velocity.X = 0;
                             OnCollideEvent(collisionComponent);
                         }
                     }
@@ -64,7 +64,7 @@ namespace monogametest.Components
                         }
                         else
                         {
-                            velocity.Y = -velocity.Y * 0.001f;
+                            velocity.Y = -velocity.Y * 0.01f;
                             OnCollideEvent(collisionComponent);
                         }
                     }

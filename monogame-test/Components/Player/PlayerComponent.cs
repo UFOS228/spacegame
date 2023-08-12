@@ -54,9 +54,8 @@ namespace monogametest.Components
                 PlMove(new Vector2(-movementAmount, physicsComponent.velocity.Y));
             }
 
-            if (GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Length() != 0f && playerIndex != PlayerIndex.One)
+            if ((MathF.Round(GamePad.GetState(playerIndex - 1).ThumbSticks.Left.X, 1) != 0f || MathF.Round(GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Y, 1) != 0f) && playerIndex != PlayerIndex.One)
             {
-                GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Normalize();
                 PlMove(new Vector2((float)(double)GamePad.GetState(playerIndex - 1).ThumbSticks.Left.X * movementAmount, -(float)(double)GamePad.GetState(playerIndex - 1).ThumbSticks.Left.Y * movementAmount));
             }
 
