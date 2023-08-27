@@ -1,7 +1,7 @@
 ﻿using System;
 using monogame_test;
 
-namespace monogametest
+namespace spacegame
 {
 	public abstract class Component
 	{

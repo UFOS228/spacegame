@@ -2,7 +2,7 @@
 using System.IO;
 using monogame_test;
 
-namespace monogametest
+namespace spacegame
 {
 	public enum ContentType {Textures = 0, Audio = 1, Fonts = 2}
 	public class ContentField

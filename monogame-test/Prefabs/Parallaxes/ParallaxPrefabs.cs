@@ -1,7 +1,7 @@
 ﻿using System;
-using monogametest.Components;
+using spacegame.Components;
 
-namespace monogametest.Prefabs.Parallaxes
+namespace spacegame.Prefabs.Parallaxes
 {
 	public class Layer1ParallaxPrefab : GameObject
 	{

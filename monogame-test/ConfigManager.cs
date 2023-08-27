@@ -2,10 +2,10 @@
 using System.Xml;
 using System.Text.Json;
 using System.Text;
-using monogametest;
-using monogametest.Components;
+using spacegame;
+using spacegame.Components;
 
-namespace monogametest
+namespace spacegame
 {
 	public class UfDataSection
 	{

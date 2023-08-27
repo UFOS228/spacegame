@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace monogametest.Components
+namespace spacegame.Components
 {
 	//public class Sprite
 	//{

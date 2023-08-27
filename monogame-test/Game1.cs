@@ -1,8 +1,8 @@
 ﻿
-using monogametest;
-using monogametest.Components;
-using monogametest.Prefabs;
-using monogametest.Prefabs.Parallaxes;
+using spacegame;
+using spacegame.Components;
+using spacegame.Prefabs;
+using spacegame.Prefabs.Parallaxes;
 using System.Diagnostics;
 
 namespace monogame_test

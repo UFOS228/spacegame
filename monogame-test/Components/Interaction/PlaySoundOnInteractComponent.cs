@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace monogametest.Components;
+namespace spacegame.Components;
 public class PlaySoundOnInteractComponent : InteractableComponent
 {
     public PlaySoundOnInteractComponent(SoundEffectCollection snd, RandomGradient vol, RandomGradient pitchh, bool isAlt = false)

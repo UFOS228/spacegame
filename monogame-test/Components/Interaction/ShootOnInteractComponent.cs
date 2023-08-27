@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace monogametest.Components
+namespace spacegame.Components
 {
     public class ShootOnInteractComponent : InteractableComponent
     {

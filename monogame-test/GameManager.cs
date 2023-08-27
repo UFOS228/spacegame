@@ -2,9 +2,9 @@
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using monogame_test;
-using monogametest.Components;
+using spacegame.Components;
 
-namespace monogametest
+namespace spacegame
 {
 	public class SoundEffectCollection
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
-using monogametest.Components;
+using spacegame.Components;
 
-namespace monogametest.Prefabs
+namespace spacegame.Prefabs
 {
 	public class PrefabTemplate : GameObject
 	{

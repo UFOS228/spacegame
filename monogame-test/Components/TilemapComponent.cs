@@ -4,7 +4,7 @@ using System.Linq;
 using monogame_test;
 using System.Diagnostics;
 
-namespace monogametest.Components
+namespace spacegame.Components
 {
 	public abstract class Tile
 	{
@@ -87,6 +87,10 @@ namespace monogametest.Components
                 }
             }
             throw new Exception($"Tile under {id} id, not finded!");
+        }
+        public Tile GetTile(Vector2 localPos)
+        {
+            return FindTile(tiles[(int)(localPos.Y / (game.oneTileScale * tilemapsScale)), (int)(localPos.X / (game.oneTileScale * tilemapsScale))]);
         }
     }
 }

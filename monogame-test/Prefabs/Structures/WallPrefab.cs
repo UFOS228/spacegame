@@ -1,8 +1,8 @@
 ﻿using System;
 using monogame_test;
-using monogametest.Components;
+using spacegame.Components;
 
-namespace monogametest.Prefabs
+namespace spacegame.Prefabs
 {
 	public class WallPrefab : GameObject
 	{

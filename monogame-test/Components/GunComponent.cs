@@ -1,4 +1,4 @@
-﻿using monogametest;
+﻿using spacegame;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace monogametest.Components
+namespace spacegame.Components
 {
     public enum GunType
     {

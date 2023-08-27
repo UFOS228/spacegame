@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using monogametest.Prefabs;
+using spacegame.Prefabs;
 
-namespace monogametest.Components
+namespace spacegame.Components
 {
 	public enum InventorySlotType {none = -1, leftHand = 0, rightHand = 1, suit = 2, pocket = 3, head = 4, shoes = 5}
 	public class InventorySlot

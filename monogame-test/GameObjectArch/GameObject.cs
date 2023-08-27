@@ -1,7 +1,7 @@
 ﻿using monogame_test;
 using System.Diagnostics;
 
-namespace monogametest
+namespace spacegame
 {
     public class GameObject
 	{

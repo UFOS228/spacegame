@@ -3,7 +3,7 @@ using static System.Formats.Asn1.AsnWriter;
 using System.ComponentModel;
 using monogame_test;
 
-namespace monogametest
+namespace spacegame
 {
 	public static class ObjectManager
 	{

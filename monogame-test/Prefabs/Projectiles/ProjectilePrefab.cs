@@ -1,11 +1,11 @@
-﻿using monogametest.Components;
+﻿using spacegame.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace monogametest.Prefabs
+namespace spacegame.Prefabs
 {
     public class ProjectilePrefab : GameObject
     {

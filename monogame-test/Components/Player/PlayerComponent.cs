@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using monogame_test;
 
-namespace monogametest.Components
+namespace spacegame.Components
 {
 	public class PlayerComponent : PhysicsComponent
     {

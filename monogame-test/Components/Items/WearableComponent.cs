@@ -1,5 +1,5 @@
 ﻿using System;
-namespace monogametest.Components
+namespace spacegame.Components
 {
 	public class WearableComponent : ItemComponent
 	{
