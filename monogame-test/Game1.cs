@@ -1,11 +1,12 @@
 ﻿
-using spacegame;
-using spacegame.Components;
-using spacegame.Prefabs;
-using spacegame.Prefabs.Parallaxes;
-using System.Diagnostics;
-
-namespace monogame_test
+global using spacegame.Components;
+global using spacegame.Prefabs;
+global using spacegame.Prefabs.Parallaxes;
+global using System.Diagnostics;
+global using System;
+global using System.Linq;
+global using Microsoft.Xna.Framework.Input;
+namespace spacegame
 {
 
     public class Game1 : Game

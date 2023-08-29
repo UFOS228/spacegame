@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Xna.Framework.Input;
-using monogame_test;
-using spacegame.Components;
-
+﻿
 namespace spacegame
 {
 	public class SoundEffectCollection
