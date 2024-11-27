@@ -1,4 +1,4 @@
 ﻿
-using var game = new monogame_test.Game1();
+using var game = new spacegame.Game1();
 game.Run();
 

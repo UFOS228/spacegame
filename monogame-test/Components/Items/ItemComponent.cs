@@ -27,7 +27,7 @@ namespace spacegame.Components
                 gameObject.GetComponents(out InteractableComponent[] comps);
                 foreach (var item in comps)
                 {
-                    item.OnInteract(player);
+                    item.OnInteract(player, 0);
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace spacegame.Components
                 gameObject.GetComponents(out InteractableComponent[] comps);
                 foreach (var item in comps)
                 {
-                    item.OnInteractAlt(player);
+                    item.OnInteract(player, 1);
                 }
             }
         }

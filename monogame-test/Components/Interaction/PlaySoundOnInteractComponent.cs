@@ -7,25 +7,18 @@ using System.Threading.Tasks;
 namespace spacegame.Components;
 public class PlaySoundOnInteractComponent : InteractableComponent
 {
-    public PlaySoundOnInteractComponent(SoundEffectCollection snd, RandomGradient vol, RandomGradient pitchh, bool isAlt = false)
+    public PlaySoundOnInteractComponent(SoundEffectCollection snd, RandomGradient vol, RandomGradient pitchh, int interactId)
     {
         sound = snd;
         volume = vol;
         pitch = pitchh;
-        this.isAlt = isAlt;
+        myInteractId = interactId;
     }
     public SoundEffectCollection sound;
     public RandomGradient volume = 1;
     public RandomGradient pitch = 0;
-    public bool isAlt = false;
-    public override void OnInteract(PlayerComponent player)
+    public override void onInteract(PlayerComponent player, int interactId)
     {
-        if (isAlt) return;
-        sound.Play3DRandom(gameObject.position, volume, pitch);
-    }
-    public override void OnInteractAlt(PlayerComponent player)
-    {
-        if (!isAlt) return;
         sound.Play3DRandom(gameObject.position, volume, pitch);
     }
 }

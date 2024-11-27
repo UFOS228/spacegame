@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using monogame_test;
+using spacegame;
 
 namespace spacegame.Components
 {

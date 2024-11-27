@@ -8,12 +8,25 @@ namespace spacegame.Components
 {
     public class InteractableComponent : Component
     {
-        public virtual void OnInteract(PlayerComponent player)
-        { 
+        public int myInteractId = 0;
 
-        }
-        public virtual void OnInteractAlt(PlayerComponent player)
+        public InteractableComponent(int myInteractId)
         {
+            this.myInteractId = myInteractId;
+        }
+        public InteractableComponent()
+        {
+            myInteractId = 0;
+        }
+        public void OnInteract(PlayerComponent player, int interactId)
+        {
+            if (myInteractId == interactId || myInteractId < 0)
+            {
+                onInteract(player, interactId);
+            }
+        }
+        public virtual void onInteract(PlayerComponent player, int interactId)
+        { 
 
         }
     }

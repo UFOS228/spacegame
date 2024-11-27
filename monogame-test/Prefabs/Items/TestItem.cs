@@ -17,7 +17,7 @@ namespace spacegame.Prefabs
                     MyContentManager.Load<SoundEffect>("Fun/skub", ContentType.Audio),
                     MyContentManager.Load<SoundEffect>("Fun/skub2", ContentType.Audio),
                     MyContentManager.Load<SoundEffect>("Fun/skub3", ContentType.Audio),
-                }.ToArray()), 1, new RandomGradient(-0.1f, 0.9f), true),
+                }.ToArray()), 1, new RandomGradient(-0.1f, 0.9f), 1),
                 new GunComponent(typeof(ProjectilePrefab), 10, GunType.Auto, 100f, 0.1f, 
                 new SoundEffectCollection(new SoundEffect[] {MyContentManager.Load<SoundEffect>("Weapon/laser3", ContentType.Audio),})),
                 new ShootOnInteractComponent(),

@@ -14,9 +14,8 @@ namespace spacegame.Components
             base.Init();
             GetComponent(out gun);
         }
-        public override void OnInteract(PlayerComponent player)
+        public override void onInteract(PlayerComponent player, int interactId)
         {
-            base.OnInteract(player);
             player.GetComponent(out PlayerInteraction playerInteraction);
             if (playerInteraction.dir == Vector2.Zero) return;
             gun.Shoot(player.gameObject.position + (playerInteraction.dir * playerInteraction.arrowDistance), MathF.Atan2(playerInteraction.dir.Y, playerInteraction.dir.X));

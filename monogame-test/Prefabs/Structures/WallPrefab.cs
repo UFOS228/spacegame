@@ -1,5 +1,5 @@
 ﻿using System;
-using monogame_test;
+using spacegame;
 using spacegame.Components;
 
 namespace spacegame.Prefabs
