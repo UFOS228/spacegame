@@ -40,26 +40,20 @@ namespace spacegame.Components
     }
     public class InventoryComponent : Component
 	{
-        public InventoryComponent(InventorySlot[] speedSlt, InventorySlot[] inventorySlt, InventorySlot[] wearSlt, float yOffset = -32, float invScale = 1.5f)
+        public InventoryComponent(InventorySlot[] speedSlt, InventorySlot[] wearSlt, float yOffset = -128, float invScale = 1.5f)
         {
             speedSlots = speedSlt.ToList();
-            inventorySlots = inventorySlt.ToList();
             wearSlots = wearSlt.ToList();
             baseOffsetY = yOffset;
             inventoryScale = invScale;
         }
         public InventoryComponent() { }
-        public float baseOffsetY = -32;
+        public float baseOffsetY = -128;
         public float inventoryScale = 1.5f;
         public int inventoryXSize = 2;
         public List<InventorySlot> speedSlots = new List<InventorySlot>()
         {
-            new InventorySlot(InventorySlotType.leftHand) { itemInSlot = ObjectManager.SpawnObject(new TestItem(), Vector2.Zero)},
-            new InventorySlot(InventorySlotType.rightHand),
-        };
-        public List<InventorySlot> inventorySlots = new List<InventorySlot>()
-        {
-            new InventorySlot(InventorySlotType.pocket),
+            new InventorySlot(InventorySlotType.pocket) { itemInSlot = ObjectManager.SpawnObject(new TestItem(), Vector2.Zero)},
             new InventorySlot(InventorySlotType.pocket),
             new InventorySlot(InventorySlotType.pocket),
             new InventorySlot(InventorySlotType.pocket),
@@ -74,6 +68,8 @@ namespace spacegame.Components
         private int renderedSlots = 0;
         private int selectedSlot = 0;
         private int selectedSpeedSlot = 0;
+
+        private bool isInvOpened = false;
         private PlayerComponent playerComponent
         {
             get
@@ -84,7 +80,7 @@ namespace spacegame.Components
         public override void Init()
         {
             base.Init();
-            baseOffsetY = -(GetComponent<RendererComponent>().texture.Height * gameObject.scale.Y / inventoryScale);
+            baseOffsetY = -(GetComponent<RendererComponent>().texture.Height * gameObject.scale.Y / inventoryScale) - 15;
         }
         public override void OnDraw()
         {
@@ -92,41 +88,41 @@ namespace spacegame.Components
             #region {Slot select n interact}
             if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.C, Buttons.RightShoulder))
             {
-                selectedSlot++;
-            }
-            if (selectedSlot >= inventorySlots.Count)
-            {
-                selectedSlot = 0;
-            }
-            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.X, Buttons.X))
-            {
                 selectedSpeedSlot++;
+            }
+            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.X, Buttons.LeftShoulder))
+            {
+                selectedSpeedSlot--;
             }
             if (selectedSpeedSlot >= speedSlots.Count)
             {
                 selectedSpeedSlot = 0;
             }
+            if (selectedSpeedSlot < 0)
+            {
+                selectedSpeedSlot = speedSlots.Count - 1;
+            }
 
             //Interact
             if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.Space, Buttons.RightTrigger))
             {
-                if (GameManager.IsKeyOrButtonDown(playerComponent.playerIndex, Keys.Tab, Buttons.LeftTrigger))
-                {
-                    if (inventorySlots[selectedSlot].itemInSlot == null && speedSlots[selectedSpeedSlot].itemInSlot != null)
-                    {
-                        inventorySlots[selectedSlot].itemInSlot = speedSlots[selectedSpeedSlot].itemInSlot;
-                        speedSlots[selectedSpeedSlot].itemInSlot = null;
-                    }
-                    else if (inventorySlots[selectedSlot].itemInSlot != null && speedSlots[selectedSpeedSlot].itemInSlot == null)
-                    {
-                        speedSlots[selectedSpeedSlot].itemInSlot = inventorySlots[selectedSlot].itemInSlot;
-                        inventorySlots[selectedSlot].itemInSlot = null;
-                    }
-                }
-                else if (speedSlots[selectedSpeedSlot].itemInSlot != null)
+                //if (GameManager.IsKeyOrButtonDown(playerComponent.playerIndex, Keys.Tab, Buttons.LeftTrigger))
+                //{
+                //    if (inventorySlots[selectedSlot].itemInSlot == null && speedSlots[selectedSpeedSlot].itemInSlot != null)
+                //    {
+                //        inventorySlots[selectedSlot].itemInSlot = speedSlots[selectedSpeedSlot].itemInSlot;
+                //        speedSlots[selectedSpeedSlot].itemInSlot = null;
+                //    }
+                //    else if (inventorySlots[selectedSlot].itemInSlot != null && speedSlots[selectedSpeedSlot].itemInSlot == null)
+                //    {
+                //        speedSlots[selectedSpeedSlot].itemInSlot = inventorySlots[selectedSlot].itemInSlot;
+                //        inventorySlots[selectedSlot].itemInSlot = null;
+                //    }
+                //}
+                if (speedSlots[selectedSpeedSlot].itemInSlot != null)
                     speedSlots[selectedSpeedSlot].itemInSlot.GetComponent<ItemComponent>().OnUse(this);
             }
-            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.Z, Buttons.A))
+            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.Z, Buttons.LeftTrigger))
             {
                 if (speedSlots[selectedSpeedSlot].itemInSlot != null)
                     speedSlots[selectedSpeedSlot].itemInSlot.GetComponent<ItemComponent>().OnAltUse(this);
@@ -134,7 +130,7 @@ namespace spacegame.Components
             #endregion
             renderedSlots = 0;
             #region {SlotRendering}
-            float offsetX = -(speedSlots[0].slotTexture.Width * inventoryScale / 2);
+            float offsetX = -(speedSlots[0].slotTexture.Width * inventoryScale) - (speedSlots[0].slotTexture.Width * inventoryScale * 0.5f);
             for (int i = 0; i < speedSlots.Count; i++)
             {
                 //Slot draw
@@ -153,49 +149,53 @@ namespace spacegame.Components
                 speedSlots[i].slotId = renderedSlots;
                 renderedSlots += 1;
             }
-            if (GameManager.IsKeyOrButtonDown(playerComponent.playerIndex, Keys.Tab, Buttons.LeftTrigger))
-            {
-                offsetX = -(inventorySlots[0].slotTexture.Width * inventoryScale / 2);
-                float offsetY = baseOffsetY - (speedSlots[0].slotTexture.Height * inventoryScale);
-                for (int i = 0; i < inventorySlots.Count; i++)
-                {
-                    game._spriteBatch.Draw(inventorySlots[i].slotTexture, gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, i == selectedSlot ? Color.OrangeRed : inventorySlots[i].slotTextureColor,
-                        0, GameManager.OriginCenter(inventorySlots[i].slotTexture), inventoryScale, SpriteEffects.None, 0.02f);
-                    //DrawItemInSlot
-                    if (inventorySlots[i].itemInSlot != null)
-                        game._spriteBatch.Draw(inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv,
-                            gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, Color.White, 0,
-                            GameManager.OriginCenter(inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv),
-                            inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
-                    offsetX += inventorySlots[i].slotTexture.Width * inventoryScale;
-                    if ((i + 1) % inventoryXSize == 0)
-                    {
-                        offsetX = -(inventorySlots[0].slotTexture.Width * inventoryScale / 2);
-                        offsetY -= inventorySlots[i].slotTexture.Height * inventoryScale;
-                    }
-                    inventorySlots[i].slotId = renderedSlots;
-                    renderedSlots += 1;
-                }
-            }
+            //if (GameManager.IsKeyOrButtonDown(playerComponent.playerIndex, Keys.Tab, Buttons.LeftTrigger))
+            //{
+            //    offsetX = -(inventorySlots[0].slotTexture.Width * inventoryScale / 2);
+            //    float offsetY = baseOffsetY - (speedSlots[0].slotTexture.Height * inventoryScale);
+            //    for (int i = 0; i < inventorySlots.Count; i++)
+            //    {
+            //        game._spriteBatch.Draw(inventorySlots[i].slotTexture, gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, i == selectedSlot ? Color.OrangeRed : inventorySlots[i].slotTextureColor,
+            //            0, GameManager.OriginCenter(inventorySlots[i].slotTexture), inventoryScale, SpriteEffects.None, 0.02f);
+            //        //DrawItemInSlot
+            //        if (inventorySlots[i].itemInSlot != null)
+            //            game._spriteBatch.Draw(inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv,
+            //                gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, Color.White, 0,
+            //                GameManager.OriginCenter(inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv),
+            //                inventorySlots[i].itemInSlot.GetComponent<ItemComponent>().inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
+            //        offsetX += inventorySlots[i].slotTexture.Width * inventoryScale;
+            //        if ((i + 1) % inventoryXSize == 0)
+            //        {
+            //            offsetX = -(inventorySlots[0].slotTexture.Width * inventoryScale / 2);
+            //            offsetY -= inventorySlots[i].slotTexture.Height * inventoryScale;
+            //        }
+            //        inventorySlots[i].slotId = renderedSlots;
+            //        renderedSlots += 1;
+            //    }
+            //}
             #endregion
             renderedSlots = 0;
             #region {WearSlotsRendering}
-            if (GameManager.IsKeyOrButtonDown(playerComponent.playerIndex, Keys.Tab, Buttons.LeftTrigger))
+            if (GameManager.IsKeyOrButtonDownOnce(playerComponent.playerIndex, Keys.Tab, Buttons.Y))
             {
-                offsetX = -((speedSlots[0].slotTexture.Width * inventoryScale / 2) + (inventorySlots[0].slotTexture.Width * inventoryScale));
-                float offsetY = baseOffsetY;
+                isInvOpened = !isInvOpened;
+            }
+            if (isInvOpened)
+            {
+                //offsetX = -((speedSlots[0].slotTexture.Width * inventoryScale / 2) + (wearSlots[0].slotTexture.Width * inventoryScale));
+                offsetX = -(speedSlots[0].slotTexture.Width * inventoryScale) - (speedSlots[0].slotTexture.Width * inventoryScale * 0.5f);
                 for (int i = 0; i < wearSlots.Count; i++)
                 {
-                    game._spriteBatch.Draw(wearSlots[i].slotTexture, gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, wearSlots[i].slotTextureColor,
+                    game._spriteBatch.Draw(wearSlots[i].slotTexture, gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, baseOffsetY * 2), null, wearSlots[i].slotTextureColor,
                         0, GameManager.OriginCenter(wearSlots[i].slotTexture), inventoryScale, SpriteEffects.None, 0.02f);
                     //DrawItemInSlot
                     if (wearSlots[i].itemInSlot != null)
                         game._spriteBatch.Draw(wearSlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv,
-                            gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, offsetY), null, Color.White, 0,
+                            gameObject.position + game.cameraPosCenteredLerped + new Vector2(offsetX, baseOffsetY * 2), null, Color.White, 0,
                             GameManager.OriginCenter(wearSlots[i].itemInSlot.GetComponent<ItemComponent>().textureInInv),
                             wearSlots[i].itemInSlot.GetComponent<ItemComponent>().inInvScale * inventoryScale, SpriteEffects.None, 0.019f);
-                    offsetY -= wearSlots[i].slotTexture.Height * inventoryScale;
-                    inventorySlots[i].slotId = renderedSlots;
+                    offsetX += wearSlots[i].slotTexture.Width * inventoryScale;
+                    wearSlots[i].slotId = renderedSlots;
                     renderedSlots += 1;
                 }
             }
